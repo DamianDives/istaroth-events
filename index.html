@@ -15,6 +15,9 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
+  <!-- Razorpay Payment Gateway SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
   <link rel="stylesheet" href="styles.css">
 </head>
 <body class="district-body">
@@ -506,6 +509,25 @@
               <span>25.0% (Premium Concierge)</span>
             </div>
           </div>
+        <!-- RAZORPAY GATEWAY PAYMENT CONFIGURATION -->
+        <div class="take-rate-governance-box" style="margin-top: 18px; border-left: 4px solid #4F46E5;">
+          <div class="trg-header">
+            <div>
+              <div class="trg-title">Razorpay Payment Gateway Integration</div>
+              <div class="trg-desc">
+                Current status: <strong id="rzpCurrentMode" style="color:#059669;">Sandbox Test Mode (Active)</strong>. Real UPI, Cards &amp; Netbanking popups. To collect real money into your bank, paste your live Razorpay Key ID.
+              </div>
+            </div>
+            <span class="district-badge-chip" id="rzpBadgeStatus" style="background:#ECFDF5; color:#059669; font-weight:700;">🟢 Gateway Connected</span>
+          </div>
+
+          <div style="display:flex; gap:10px; align-items:center; margin-top:12px; flex-wrap:wrap;">
+            <div style="flex:1; min-width:240px;">
+              <input type="text" id="customRzpKeyInput" class="text-input" placeholder="rzp_test_... or rzp_live_..." style="font-family:var(--mono); font-size:12.5px;">
+            </div>
+            <button class="btn btn-p" id="btnSaveRzpKey" style="height:42px; padding:0 18px; font-size:13px;">Save Key</button>
+            <button class="btn btn-s" id="btnResetRzpKey" style="height:42px; padding:0 14px; font-size:13px;">Reset to Sandbox</button>
+          </div>
         </div>
 
         <!-- REAL-TIME AUDIT TRANSACTION LEDGER -->
@@ -812,18 +834,37 @@
 
         <form id="checkoutForm">
           <div class="input-group">
-            <label class="input-label" for="attendeeName">Full Name *</label>
+            <label class="input-label" for="attendeeName">Attendee Full Name *</label>
             <input type="text" id="attendeeName" class="text-input" placeholder="e.g. Vikramaditya Roy" required>
           </div>
 
-          <div class="input-group">
-            <label class="input-label" for="attendeeEmail">Email for Ticket Dispatch *</label>
-            <input type="email" id="attendeeEmail" class="text-input" placeholder="vikram@techfirm.in" required>
+          <div class="form-row-2">
+            <div class="input-group">
+              <label class="input-label" for="attendeeEmail">Email for Ticket Dispatch *</label>
+              <input type="email" id="attendeeEmail" class="text-input" placeholder="vikram@techfirm.in" required>
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="attendeePhone">Mobile (for UPI &amp; Pass SMS) *</label>
+              <input type="tel" id="attendeePhone" class="text-input" placeholder="+91 98765 43210" value="+91 98765 43210" required>
+            </div>
           </div>
 
-          <button type="submit" class="btn btn-p" style="width:100%; height:46px; font-size:14px;">
-            <i data-lucide="lock" style="width:15px;height:15px;"></i>
-            Confirm &amp; Issue Digital Pass
+          <!-- Razorpay Gateway Payment Security Badge -->
+          <div class="rzp-trust-badge">
+            <div class="rtb-left">
+              <i data-lucide="shield-check" style="width:16px;height:16px;color:#10B981;"></i>
+              <span>Razorpay Secured Gateway</span>
+            </div>
+            <div class="rtb-methods">
+              <span class="rtb-chip">UPI (GPay / PhonePe)</span>
+              <span class="rtb-chip">Cards</span>
+              <span class="rtb-chip">Netbanking</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-p btn-razorpay-pay" id="btnRazorpaySubmit" style="width:100%; height:48px; font-size:14px; font-weight:700; background:#0F172A; display:flex; align-items:center; justify-content:center; gap:8px;">
+            <i data-lucide="lock" style="width:16px;height:16px;color:#10B981;"></i>
+            <span id="payButtonText">Pay ₹0.00 via Razorpay</span>
           </button>
         </form>
       </div>

@@ -1706,15 +1706,26 @@ class IstarothEventsApp {
     document.getElementById('modalPlatformFee').textContent = `${sym}${platformCut.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
     document.getElementById('modalOrganizerNet').textContent = `${sym}${organizerNet.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
     document.getElementById('modalTotal').textContent = `${sym}${totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`;
+
+    const payBtnText = document.getElementById('payButtonText');
+    if (payBtnText) {
+      payBtnText.textContent = `Pay ${sym}${totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })} via Razorpay`;
+    }
   }
 
   processBooking() {
     const nameInput = document.getElementById('attendeeName');
     const emailInput = document.getElementById('attendeeEmail');
-    const attendeeName = nameInput.value.trim();
-    const attendeeEmail = emailInput.value.trim();
+    const phoneInput = document.getElementById('attendeePhone');
 
-    if (!attendeeName || !emailInput) return;
+    const attendeeName = nameInput?.value.trim() || '';
+    const attendeeEmail = emailInput?.value.trim() || '';
+    const attendeePhone = phoneInput?.value.trim() || '+91 98765 43210';
+
+    if (!attendeeName || !attendeeEmail) {
+      this.showToast('⚠️ Please provide attendee name and email');
+      return;
+    }
 
     const unitPrice = this.selectedTier === 'vip' 
       ? (this.activeEvent.vipPrice || this.activeEvent.price * 2) 
@@ -1722,15 +1733,103 @@ class IstarothEventsApp {
     const subtotal = unitPrice * this.ticketQuantity;
     const platformCut = subtotal * (this.platformTakeRate / 100);
     const organizerNet = subtotal - platformCut;
+    const amountInPaise = Math.round(subtotal * 100);
 
+    const rzpKey = localStorage.getItem('istaroth_rzp_key') || 'rzp_test_1DP5mmOlF5G5ag';
+
+    // Check if Razorpay SDK is loaded
+    if (typeof window.Razorpay === 'function') {
+      const options = {
+        key: rzpKey,
+        amount: amountInPaise,
+        currency: 'INR',
+        name: 'Istaroth Events',
+        description: `${this.selectedTier === 'vip' ? 'VIP All-Access' : 'General Admission'} Pass • ${this.activeEvent.title}`,
+        image: 'favicon.svg',
+        prefill: {
+          name: attendeeName,
+          email: attendeeEmail,
+          contact: attendeePhone.replace(/[^0-9]/g, '').slice(-10) || '9876543210'
+        },
+        theme: {
+          color: '#4F46E5'
+        },
+        modal: {
+          ondismiss: () => {
+            this.showToast('Payment window dismissed');
+          }
+        },
+        handler: (response) => {
+          const paymentId = response.razorpay_payment_id || `pay_test_${Math.floor(10000000 + Math.random() * 90000000)}`;
+          this.completeSuccessfulBooking({
+            attendeeName,
+            attendeeEmail,
+            attendeePhone,
+            paymentId,
+            subtotal,
+            platformCut,
+            organizerNet,
+            paymentMethod: 'Razorpay UPI / Card'
+          });
+        }
+      };
+
+      try {
+        const rzp = new window.Razorpay(options);
+        rzp.on('payment.failed', (resp) => {
+          this.showToast(`⚠️ Payment Failed: ${resp.error?.description || 'Transaction cancelled'}`);
+        });
+        rzp.open();
+      } catch (err) {
+        console.warn('Razorpay open failed, using fallback gateway', err);
+        this.openSimulatedPaymentGateway({
+          attendeeName,
+          attendeeEmail,
+          attendeePhone,
+          subtotal,
+          platformCut,
+          organizerNet
+        });
+      }
+    } else {
+      // Fallback gateway if ad-blocker blocked external CDN script
+      this.openSimulatedPaymentGateway({
+        attendeeName,
+        attendeeEmail,
+        attendeePhone,
+        subtotal,
+        platformCut,
+        organizerNet
+      });
+    }
+  }
+
+  openSimulatedPaymentGateway(details) {
+    const paymentId = `pay_sim_${Math.floor(10000000 + Math.random() * 90000000)}`;
+    const confirmPay = confirm(`[Razorpay Sandbox Gateway]\n\nMerchant: Istaroth Events\nEvent: ${this.activeEvent.title}\nAmount: ${this.activeEvent.symbol || '₹'}${details.subtotal.toLocaleString('en-IN')}\n\nClick OK to simulate successful UPI/Card payment.`);
+    if (confirmPay) {
+      this.completeSuccessfulBooking({
+        ...details,
+        paymentId,
+        paymentMethod: 'Razorpay Sandbox (Simulated UPI)'
+      });
+    } else {
+      this.showToast('Payment cancelled');
+    }
+  }
+
+  completeSuccessfulBooking({ attendeeName, attendeeEmail, attendeePhone, paymentId, subtotal, platformCut, organizerNet, paymentMethod }) {
     const txnId = `TXN-${Math.floor(10000 + Math.random() * 90000)}`;
     const ticketId = `IST-${Math.floor(100000 + Math.random() * 900000)}`;
 
     const txnRecord = {
       id: txnId,
+      paymentId: paymentId,
+      paymentMethod: paymentMethod || 'Razorpay Gateway',
       eventTitle: this.activeEvent.title,
       buyerName: attendeeName,
       buyerEmail: attendeeEmail,
+      buyerPhone: attendeePhone,
       tier: this.selectedTier === 'vip' ? 'VIP All-Access' : 'General Admission',
       quantity: this.ticketQuantity,
       subtotal: subtotal,
@@ -1753,6 +1852,7 @@ class IstarothEventsApp {
     const passRecord = {
       ticketId: ticketId,
       txnId: txnId,
+      paymentId: paymentId,
       eventId: this.activeEvent.id,
       eventTitle: this.activeEvent.title,
       venue: this.activeEvent.venue,
@@ -1762,6 +1862,7 @@ class IstarothEventsApp {
       tier: this.selectedTier === 'vip' ? 'VIP All-Access Pass' : 'General Admission',
       attendeeName: attendeeName,
       attendeeEmail: attendeeEmail,
+      attendeePhone: attendeePhone,
       quantity: this.ticketQuantity,
       pricePaid: `${this.activeEvent.symbol}${subtotal.toLocaleString('en-IN')}`,
       platformFeeCaptured: `${this.activeEvent.symbol}${platformCut.toLocaleString('en-IN')}`,
@@ -1775,15 +1876,18 @@ class IstarothEventsApp {
     this.renderEvents();
     this.updateTreasuryView();
 
-    nameInput.value = '';
-    emailInput.value = '';
+    const nameInput = document.getElementById('attendeeName');
+    const emailInput = document.getElementById('attendeeEmail');
+    if (nameInput) nameInput.value = '';
+    if (emailInput) emailInput.value = '';
 
-    if (this.switchDistrictTab) {
+    if (typeof this.switchDistrictTab === 'function') {
       this.switchDistrictTab('ticketsView');
     } else {
-      document.querySelector('.nav-tab[data-tab="ticketsView"]')?.click();
+      document.querySelector('[data-district-tab="ticketsView"]')?.click();
     }
-    this.showToast(`🎉 Reservation confirmed! Captured ${this.activeEvent.symbol}${platformCut.toFixed(2)} Platform Cut into Treasury.`);
+
+    this.showToast(`🎉 Payment Confirmed (${paymentId})! Captured ${this.activeEvent.symbol}${platformCut.toFixed(2)} Platform Fee into Treasury.`);
   }
 
   // --------------------------------------------------------------------------
@@ -1924,6 +2028,52 @@ class IstarothEventsApp {
     const saveBtn = document.getElementById('btnSaveCommissionRate');
     saveBtn?.addEventListener('click', () => {
       this.showToast(`✨ Platform take-rate updated to ${this.platformTakeRate.toFixed(1)}%!`);
+    });
+
+    // Razorpay Gateway API Key Configuration
+    const rzpInput = document.getElementById('customRzpKeyInput');
+    const rzpSaveBtn = document.getElementById('btnSaveRzpKey');
+    const rzpResetBtn = document.getElementById('btnResetRzpKey');
+    const rzpMode = document.getElementById('rzpCurrentMode');
+    const rzpBadge = document.getElementById('rzpBadgeStatus');
+
+    const updateRzpDisplay = () => {
+      const savedKey = localStorage.getItem('istaroth_rzp_key');
+      if (savedKey && savedKey.startsWith('rzp_live')) {
+        if (rzpMode) rzpMode.innerHTML = `<span style="color:#059669;">Live Mode (${savedKey.slice(0, 12)}...)</span>`;
+        if (rzpBadge) {
+          rzpBadge.textContent = '🟢 Live Gateway';
+          rzpBadge.style.background = '#ECFDF5';
+          rzpBadge.style.color = '#059669';
+        }
+      } else {
+        if (rzpMode) rzpMode.innerHTML = `<span style="color:#4F46E5;">Sandbox Test Mode (Active)</span>`;
+        if (rzpBadge) {
+          rzpBadge.textContent = '🟢 Sandbox Connected';
+          rzpBadge.style.background = '#EEF2FF';
+          rzpBadge.style.color = '#4F46E5';
+        }
+      }
+      if (rzpInput) {
+        rzpInput.value = savedKey || 'rzp_test_1DP5mmOlF5G5ag';
+      }
+    };
+
+    updateRzpDisplay();
+
+    rzpSaveBtn?.addEventListener('click', () => {
+      const val = rzpInput?.value.trim();
+      if (val) {
+        localStorage.setItem('istaroth_rzp_key', val);
+        updateRzpDisplay();
+        this.showToast(`✅ Razorpay Key saved: ${val.slice(0, 12)}...`);
+      }
+    });
+
+    rzpResetBtn?.addEventListener('click', () => {
+      localStorage.removeItem('istaroth_rzp_key');
+      updateRzpDisplay();
+      this.showToast('🔄 Reset to Razorpay Sandbox Test Mode');
     });
   }
 
