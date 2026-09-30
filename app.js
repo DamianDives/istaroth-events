@@ -770,7 +770,7 @@ class IstarothEventsApp {
         date: date || 'Today',
         time: slot,
         tier: `${partySize} Guests VIP Table`,
-        pricePaid: 'Complimentary (Istaroth 15% Member Perk)',
+        pricePaid: 'Complimentary Table Reservation',
         currency: '₹',
         attendeeName: guestName,
         attendeeEmail: guestPhone,

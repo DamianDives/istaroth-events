@@ -688,7 +688,7 @@ export const FEATURED_HERO_CAROUSEL = [
     date: 'EVERY FRIDAY',
     time: '07:30 PM ONWARDS',
     price: 1800,
-    badge: '🍽️ ISTAROTH PERK: 15% OFF',
+    badge: '🍽️ FOUNDER VIP TABLE',
     bgGradient: 'linear-gradient(135deg, #2A0845 0%, #6441A5 100%)',
     image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1200&q=80',
     targetDiningId: 'dine-blr-01'
@@ -735,7 +735,7 @@ export const DINING_VENUES = [
     priceForTwo: 1800,
     currency: '₹',
     image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80',
-    perk: 'Flat 15% off with Istaroth Pass',
+    perk: 'Reserved Founder Table & Priority Seating',
     tags: ['Tech Mixer Favorite', 'Outdoor Seating', 'Live Craft Beer'],
     features: ['Valet Parking', 'High-Speed Wi-Fi', 'Builder Friendly'],
     slots: ['01:00 PM', '07:30 PM', '09:00 PM', '10:30 PM']
@@ -788,7 +788,7 @@ export const DINING_VENUES = [
     priceForTwo: 2200,
     currency: '₹',
     image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
-    perk: 'Istaroth Reserved Builder Table + 15% Off',
+    perk: 'Reserved Sky Terrace Table & Chef Tasting Platter',
     tags: ['Jubilee Hills Skyline', 'Tech Founders Spot', 'Craft Beers'],
     features: ['Valet', 'Terrace Seating', 'Live DJ Night'],
     slots: ['01:00 PM', '07:30 PM', '09:15 PM', '11:00 PM']
@@ -862,7 +862,7 @@ export const DINING_VENUES = [
     priceForTwo: 1700,
     currency: '₹',
     image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
-    perk: '15% Off Food Bill for Istaroth Members',
+    perk: 'Reserved Beer Garden Table & Welcome Sampler',
     tags: ['Koregaon Park', 'Dev Community Meet', 'Fresh Brews'],
     features: ['Outdoor Beer Garden', 'Games & Pub Trivia'],
     slots: ['01:00 PM', '07:30 PM', '09:30 PM']

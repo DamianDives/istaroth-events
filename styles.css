@@ -3896,17 +3896,62 @@ img {
 }
 
 /* ==========================================================================
-   7. RESPONSIVE MEDIA QUERIES
+   7. RESPONSIVE MEDIA QUERIES (DESKTOP, LAPTOP & TABLET)
    ========================================================================== */
-@media (max-width: 1080px) {
+@media (max-width: 1360px) {
+  .district-header-container {
+    padding: 10px 16px;
+    gap: 10px;
+  }
+  .district-search-bar {
+    width: 170px;
+  }
+  .district-search-bar:focus-within {
+    width: 210px;
+  }
+  .district-tab-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    gap: 5px;
+  }
+  .district-utility-btn {
+    padding: 5px 9px;
+    font-size: 11.5px;
+  }
+  .district-cta-host-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  .district-loc-pill {
+    padding: 5px 9px;
+  }
+  .district-loc-city-label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1180px) {
   .district-header-container {
     flex-wrap: wrap;
+    padding: 10px 16px 8px;
+    gap: 10px;
+  }
+  .district-brand-wrap {
+    order: 1;
+  }
+  .district-header-actions {
+    order: 2;
+    margin-left: auto;
   }
   .district-nav-tabs {
     order: 3;
     width: 100%;
+    justify-content: center;
     overflow-x: auto;
-    justify-content: flex-start;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 3px;
+    margin-top: 2px;
   }
   .district-carousel {
     height: 300px;
@@ -3916,35 +3961,40 @@ img {
   }
 }
 
+@media (max-width: 900px) {
+  .district-search-bar {
+    width: 140px;
+  }
+  .district-search-bar:focus-within {
+    width: 180px;
+  }
+  .district-cards-row {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .d-hide-mobile {
     display: none;
   }
   .district-search-bar {
-    width: 100%;
+    display: none;
   }
   .district-header-actions {
-    width: 100%;
-    justify-content: space-between;
+    gap: 6px;
   }
   .district-carousel {
-    height: 260px;
+    height: 250px;
   }
   .district-slide {
-    padding: 20px 18px;
+    padding: 18px 16px;
   }
   .district-slide-title {
     font-size: 18px;
   }
-  .district-cards-row {
-    grid-template-columns: 1fr;
-  }
-  .district-venues-grid {
-    grid-template-columns: 1fr;
-  }
-  .district-movies-grid {
-    grid-template-columns: 1fr;
-  }
+  .district-cards-row,
+  .district-venues-grid,
+  .district-movies-grid,
   .district-comedy-grid {
     grid-template-columns: 1fr;
   }
