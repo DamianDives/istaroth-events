@@ -42,6 +42,10 @@ class IstarothEventsApp {
     this.ledger = this.loadLedger();
     this.myTickets = this.loadTickets();
 
+    // User Authentication Session & Registry
+    this.usersRegistry = this.loadUsersRegistry();
+    this.currentUser = this.loadCurrentUser();
+
     // Active checkout state
     this.activeEvent = null;
     this.selectedTier = 'general';
@@ -51,9 +55,11 @@ class IstarothEventsApp {
   }
 
   init() {
+    this.initAuthSystem();
     this.initDistrictNavigation();
     this.initDistrictCarousel();
     this.initBookMyShowLocationModal();
+    this.renderHeaderAuthWidget();
     this.renderCategoryPills();
     this.renderNeighborhoodPills();
     this.bindSearchAndSort();
@@ -1806,6 +1812,16 @@ class IstarothEventsApp {
     document.getElementById('modalPlatformRate').textContent = this.platformTakeRate.toFixed(1);
     document.getElementById('modalFeePct').textContent = `${this.platformTakeRate.toFixed(1)}%`;
 
+    // Auto-fill attendee details if user is logged in
+    if (this.currentUser) {
+      const nameInput = document.getElementById('attendeeName');
+      const emailInput = document.getElementById('attendeeEmail');
+      const phoneInput = document.getElementById('attendeePhone');
+      if (nameInput) nameInput.value = this.currentUser.name || '';
+      if (emailInput) emailInput.value = this.currentUser.email || '';
+      if (phoneInput && this.currentUser.phone) phoneInput.value = this.currentUser.phone;
+    }
+
     this.recalculateCheckout();
 
     const modal = document.getElementById('checkoutModal');
@@ -2572,6 +2588,376 @@ class IstarothEventsApp {
         closeModal();
         this.showToast(`🛰️ Live Radar: Ingested fresh event in ${currentCity} from Luma stream!`);
       }, 1100);
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // USER AUTHENTICATION & SESSION PERSISTENCE
+  // --------------------------------------------------------------------------
+  loadUsersRegistry() {
+    const saved = localStorage.getItem('istaroth_users_db');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse users database', e);
+      }
+    }
+    const defaultUsers = [
+      {
+        id: 'usr-aarav-1',
+        name: 'Aarav Sharma',
+        email: 'aarav@istaroth.tech',
+        password: 'password123',
+        phone: '+91 98450 12345',
+        city: 'bengaluru',
+        role: 'Verified VIP Member',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
+        joinedAt: '2026-01-15'
+      },
+      {
+        id: 'usr-kavya-2',
+        name: 'Kavya Nair',
+        email: 'kavya@istaroth.tech',
+        password: 'password123',
+        phone: '+91 99201 56789',
+        city: 'mumbai',
+        role: 'Community Host',
+        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&q=80',
+        joinedAt: '2026-03-20'
+      }
+    ];
+    localStorage.setItem('istaroth_users_db', JSON.stringify(defaultUsers));
+    return defaultUsers;
+  }
+
+  saveUsersRegistry() {
+    localStorage.setItem('istaroth_users_db', JSON.stringify(this.usersRegistry));
+  }
+
+  loadCurrentUser() {
+    const saved = localStorage.getItem('istaroth_auth_user');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse session user', e);
+      }
+    }
+    return null;
+  }
+
+  saveCurrentUser(user) {
+    this.currentUser = user;
+    if (user) {
+      localStorage.setItem('istaroth_auth_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('istaroth_auth_user');
+    }
+    this.renderHeaderAuthWidget();
+  }
+
+  renderHeaderAuthWidget() {
+    const widget = document.getElementById('headerAuthWidget');
+    if (!widget) return;
+
+    if (!this.currentUser) {
+      widget.innerHTML = `
+        <button type="button" class="header-auth-login-btn" id="btnHeaderSignIn">
+          <i data-lucide="user" style="width:13px;height:13px;"></i>
+          <span>Sign In</span>
+        </button>
+      `;
+      widget.querySelector('#btnHeaderSignIn')?.addEventListener('click', () => {
+        this.openAuthModal('login');
+      });
+    } else {
+      const initials = (this.currentUser.name || 'User')
+        .split(' ')
+        .map(n => n[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase();
+      
+      const firstName = (this.currentUser.name || 'Account').split(' ')[0];
+
+      widget.innerHTML = `
+        <div class="user-profile-pill" id="userProfileDropdownTrigger" tabindex="0" role="button" aria-haspopup="true">
+          <div class="user-avatar-chip">
+            ${this.currentUser.avatar ? `<img src="${this.currentUser.avatar}" alt="${this.escapeHtml(this.currentUser.name)}" />` : initials}
+          </div>
+          <span class="user-profile-name">${this.escapeHtml(firstName)}</span>
+          <i data-lucide="chevron-down" style="width:12px;height:12px;color:var(--text-400);"></i>
+
+          <div class="user-dropdown-menu" id="userDropdownMenu">
+            <div class="user-dropdown-header">
+              <div class="user-dropdown-name">${this.escapeHtml(this.currentUser.name)}</div>
+              <div class="user-dropdown-email">${this.escapeHtml(this.currentUser.email)}</div>
+              <div class="user-dropdown-role">${this.currentUser.role || 'Member'}</div>
+            </div>
+            <div class="user-dropdown-divider"></div>
+            <button type="button" class="user-dropdown-item" id="btnUserViewPasses">
+              <i data-lucide="qr-code" style="width:14px;height:14px;"></i>
+              <span>My Passes &amp; Bookings</span>
+            </button>
+            <button type="button" class="user-dropdown-item" id="btnUserHostEvent">
+              <i data-lucide="plus-circle" style="width:14px;height:14px;"></i>
+              <span>Host an Experience</span>
+            </button>
+            <div class="user-dropdown-divider"></div>
+            <button type="button" class="user-dropdown-item user-dropdown-item-danger" id="btnUserSignOut">
+              <i data-lucide="log-out" style="width:14px;height:14px;"></i>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      const trigger = widget.querySelector('#userProfileDropdownTrigger');
+      const menu = widget.querySelector('#userDropdownMenu');
+
+      trigger?.addEventListener('click', (e) => {
+        if (!e.target.closest('.user-dropdown-item')) {
+          menu?.classList.toggle('active');
+        }
+      });
+
+      widget.querySelector('#btnUserViewPasses')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menu?.classList.remove('active');
+        this.switchDistrictTab('ticketsView');
+      });
+
+      widget.querySelector('#btnUserHostEvent')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menu?.classList.remove('active');
+        this.switchDistrictTab('hostView');
+      });
+
+      widget.querySelector('#btnUserSignOut')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.signOutUser();
+      });
+
+      // Close menu if clicked outside
+      document.addEventListener('click', (e) => {
+        if (!widget.contains(e.target)) {
+          menu?.classList.remove('active');
+        }
+      });
+    }
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  signOutUser() {
+    const name = this.currentUser ? this.currentUser.name : 'User';
+    this.saveCurrentUser(null);
+    this.showToast(`Signed out of ${name}. Logged in as Guest.`);
+  }
+
+  openAuthModal(tab = 'login') {
+    const overlay = document.getElementById('authModalOverlay');
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    this.switchAuthTab(tab);
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  closeAuthModal() {
+    const overlay = document.getElementById('authModalOverlay');
+    if (!overlay) return;
+    overlay.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  switchAuthTab(tab) {
+    const tabLogin = document.getElementById('tabBtnLogin');
+    const tabSignup = document.getElementById('tabBtnSignup');
+    const formLogin = document.getElementById('authLoginForm');
+    const formSignup = document.getElementById('authSignupForm');
+    const title = document.getElementById('authModalTitle');
+    const sub = document.getElementById('authModalSub');
+    const demoBanner = document.getElementById('authDemoBanner');
+
+    const errLogin = document.getElementById('loginStatusError');
+    const errSignup = document.getElementById('signupStatusError');
+    if (errLogin) errLogin.style.display = 'none';
+    if (errSignup) errSignup.style.display = 'none';
+
+    if (tab === 'login') {
+      tabLogin?.classList.add('active');
+      tabSignup?.classList.remove('active');
+      if (formLogin) formLogin.style.display = 'block';
+      if (formSignup) formSignup.style.display = 'none';
+      if (demoBanner) demoBanner.style.display = 'flex';
+      if (title) title.textContent = 'Welcome back to Istaroth';
+      if (sub) sub.textContent = 'Access your booked passes, host submissions, and member privileges';
+    } else {
+      tabSignup?.classList.add('active');
+      tabLogin?.classList.remove('active');
+      if (formSignup) formSignup.style.display = 'block';
+      if (formLogin) formLogin.style.display = 'none';
+      if (demoBanner) demoBanner.style.display = 'none';
+      if (title) title.textContent = 'Create your Istaroth Account';
+      if (sub) sub.textContent = 'One pass for premier tech conferences, dining mixers, and screenings';
+    }
+  }
+
+  initAuthSystem() {
+    const overlay = document.getElementById('authModalOverlay');
+    const btnClose = document.getElementById('btnAuthClose');
+    const tabLogin = document.getElementById('tabBtnLogin');
+    const tabSignup = document.getElementById('tabBtnSignup');
+    const formLogin = document.getElementById('authLoginForm');
+    const formSignup = document.getElementById('authSignupForm');
+
+    btnClose?.addEventListener('click', () => this.closeAuthModal());
+    overlay?.addEventListener('click', (e) => {
+      if (e.target === overlay) this.closeAuthModal();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay && overlay.style.display !== 'none') {
+        this.closeAuthModal();
+      }
+    });
+
+    tabLogin?.addEventListener('click', () => this.switchAuthTab('login'));
+    tabSignup?.addEventListener('click', () => this.switchAuthTab('signup'));
+
+    // Toggle password visibility
+    const setupToggle = (btnId, inputId) => {
+      const btn = document.getElementById(btnId);
+      const input = document.getElementById(inputId);
+      if (btn && input) {
+        btn.addEventListener('click', () => {
+          const isPw = input.type === 'password';
+          input.type = isPw ? 'text' : 'password';
+          btn.innerHTML = isPw 
+            ? '<i data-lucide="eye-off" style="width:14px;height:14px;"></i>' 
+            : '<i data-lucide="eye" style="width:14px;height:14px;"></i>';
+          if (window.lucide) window.lucide.createIcons();
+        });
+      }
+    };
+    setupToggle('btnToggleLoginPw', 'loginPassword');
+    setupToggle('btnToggleSignupPw', 'signupPassword');
+
+    // 1-Click Demo Logins
+    document.getElementById('btnDemoUser1')?.addEventListener('click', () => {
+      const aarav = this.usersRegistry.find(u => u.email === 'aarav@istaroth.tech') || this.usersRegistry[0];
+      this.saveCurrentUser(aarav);
+      this.closeAuthModal();
+      this.showToast(`⚡ Signed in as ${aarav.name} (${aarav.city.toUpperCase()})`);
+    });
+
+    document.getElementById('btnDemoUser2')?.addEventListener('click', () => {
+      const kavya = this.usersRegistry.find(u => u.email === 'kavya@istaroth.tech') || this.usersRegistry[1];
+      this.saveCurrentUser(kavya);
+      this.closeAuthModal();
+      this.showToast(`⚡ Signed in as ${kavya.name} (${kavya.city.toUpperCase()})`);
+    });
+
+    // Login Form Submit
+    formLogin?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail')?.value.trim().toLowerCase();
+      const password = document.getElementById('loginPassword')?.value;
+      const errBox = document.getElementById('loginStatusError');
+
+      if (!email || !password) {
+        if (errBox) {
+          errBox.textContent = 'Please enter your email and password.';
+          errBox.style.display = 'block';
+        }
+        return;
+      }
+
+      const user = this.usersRegistry.find(u => u.email.toLowerCase() === email);
+      if (!user) {
+        if (errBox) {
+          errBox.textContent = 'No account found with this email. Please check or create an account.';
+          errBox.style.display = 'block';
+        }
+        return;
+      }
+
+      if (user.password && user.password !== password) {
+        if (errBox) {
+          errBox.textContent = 'Invalid password. If you forgot your password, please contact support.';
+          errBox.style.display = 'block';
+        }
+        return;
+      }
+
+      if (errBox) errBox.style.display = 'none';
+      this.saveCurrentUser(user);
+      this.closeAuthModal();
+      this.showToast(`🎉 Welcome back, ${user.name}!`);
+    });
+
+    // Sign Up Form Submit
+    formSignup?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('signupName')?.value.trim();
+      const email = document.getElementById('signupEmail')?.value.trim().toLowerCase();
+      const phone = document.getElementById('signupPhone')?.value.trim();
+      const city = document.getElementById('signupCity')?.value || 'bengaluru';
+      const password = document.getElementById('signupPassword')?.value;
+      const errBox = document.getElementById('signupStatusError');
+
+      if (!name || !email || !password || !phone) {
+        if (errBox) {
+          errBox.textContent = 'Please fill out all required fields.';
+          errBox.style.display = 'block';
+        }
+        return;
+      }
+
+      if (password.length < 6) {
+        if (errBox) {
+          errBox.textContent = 'Password must be at least 6 characters.';
+          errBox.style.display = 'block';
+        }
+        return;
+      }
+
+      const existing = this.usersRegistry.find(u => u.email.toLowerCase() === email);
+      if (existing) {
+        if (errBox) {
+          errBox.textContent = 'An account with this email already exists. Please sign in instead.';
+          errBox.style.display = 'block';
+        }
+        return;
+      }
+
+      const newUser = {
+        id: `usr-${Date.now()}`,
+        name,
+        email,
+        phone,
+        city,
+        password,
+        role: 'Verified Member',
+        joinedAt: new Date().toISOString().split('T')[0]
+      };
+
+      this.usersRegistry.push(newUser);
+      this.saveUsersRegistry();
+      this.saveCurrentUser(newUser);
+
+      if (errBox) errBox.style.display = 'none';
+      this.closeAuthModal();
+      this.showToast(`✨ Account created successfully! Welcome to Istaroth, ${name}.`);
+    });
+
+    // Forgot password hint
+    document.getElementById('linkForgotPassword')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.showToast('💡 Password reset link sent to registered email.');
     });
   }
 

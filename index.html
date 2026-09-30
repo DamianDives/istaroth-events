@@ -111,6 +111,11 @@
           <i data-lucide="plus" style="width:14px;height:14px;"></i>
           <span>Host</span>
         </button>
+
+        <!-- Account / Sign In Widget -->
+        <div id="headerAuthWidget" class="header-auth-widget">
+          <!-- Rendered via JS -->
+        </div>
       </div>
 
     </div>
@@ -1158,6 +1163,202 @@
           </button>
         </div>
 
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       AUTHENTICATION MODAL (Create Account & Sign In)
+       ==================================================================== -->
+  <div class="auth-modal-overlay" id="authModalOverlay" style="display:none;">
+    <div class="auth-modal-card">
+      <button type="button" class="auth-modal-close" id="btnAuthClose" aria-label="Close">
+        <i data-lucide="x" style="width:16px;height:16px;"></i>
+      </button>
+
+      <!-- Auth Modal Header -->
+      <div class="auth-modal-header">
+        <div class="auth-brand-logo">
+          <span>istaroth</span>
+          <span class="auth-brand-chip">auth</span>
+        </div>
+        <h2 class="auth-modal-title" id="authModalTitle">Welcome to Istaroth</h2>
+        <p class="auth-modal-sub" id="authModalSub">
+          Join the premier ecosystem for summits, tech dinners, and grassroots weekend experiences
+        </p>
+
+        <!-- Segmented Tab Switcher: Login vs Sign Up -->
+        <div class="auth-tabs-toggle">
+          <button type="button" class="auth-toggle-btn active" id="tabBtnLogin">
+            <i data-lucide="log-in" style="width:13px;height:13px;"></i>
+            <span>Sign In</span>
+          </button>
+          <button type="button" class="auth-toggle-btn" id="tabBtnSignup">
+            <i data-lucide="user-plus" style="width:13px;height:13px;"></i>
+            <span>Create Account</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Demo Login Bar -->
+      <div class="auth-demo-banner" id="authDemoBanner">
+        <span class="auth-demo-label">⚡ 1-Click Quick Demo Login:</span>
+        <div class="auth-demo-chips">
+          <button type="button" class="demo-chip-btn" id="btnDemoUser1">Aarav (Bengaluru)</button>
+          <button type="button" class="demo-chip-btn" id="btnDemoUser2">Kavya (Mumbai)</button>
+        </div>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="authLoginForm" class="auth-form-body">
+        <div class="form-group">
+          <label class="form-label" for="loginEmail">Email Address</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="mail" class="auth-input-icon"></i>
+            <input 
+              type="email" 
+              id="loginEmail" 
+              class="auth-input" 
+              placeholder="you@istaroth.tech" 
+              required 
+              autocomplete="email"
+            >
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <label class="form-label" for="loginPassword" style="margin:0;">Password</label>
+            <a href="#" class="auth-link" id="linkForgotPassword">Forgot?</a>
+          </div>
+          <div class="auth-input-wrapper">
+            <i data-lucide="lock" class="auth-input-icon"></i>
+            <input 
+              type="password" 
+              id="loginPassword" 
+              class="auth-input" 
+              placeholder="••••••••" 
+              required 
+              autocomplete="current-password"
+            >
+            <button type="button" class="auth-eye-btn" id="btnToggleLoginPw" aria-label="Toggle password visibility">
+              <i data-lucide="eye" style="width:14px;height:14px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-status-error" id="loginStatusError" style="display:none;"></div>
+
+        <button type="submit" class="auth-submit-btn" id="btnLoginSubmit">
+          <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+          <span>Sign In to Your Account</span>
+        </button>
+      </form>
+
+      <!-- SIGN UP (ACCOUNT CREATION) FORM -->
+      <form id="authSignupForm" class="auth-form-body" style="display:none;">
+        <div class="form-group">
+          <label class="form-label" for="signupName">Full Name</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="user" class="auth-input-icon"></i>
+            <input 
+              type="text" 
+              id="signupName" 
+              class="auth-input" 
+              placeholder="e.g. Karthik Sundar" 
+              required 
+              autocomplete="name"
+            >
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:12px;">
+          <label class="form-label" for="signupEmail">Email Address</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="mail" class="auth-input-icon"></i>
+            <input 
+              type="email" 
+              id="signupEmail" 
+              class="auth-input" 
+              placeholder="name@domain.com" 
+              required 
+              autocomplete="email"
+            >
+          </div>
+        </div>
+
+        <div class="auth-grid-2" style="margin-top:12px;">
+          <div class="form-group">
+            <label class="form-label" for="signupPhone">Mobile Number</label>
+            <div class="auth-input-wrapper">
+              <i data-lucide="phone" class="auth-input-icon"></i>
+              <input 
+                type="tel" 
+                id="signupPhone" 
+                class="auth-input" 
+                placeholder="+91 98765 43210" 
+                required 
+                autocomplete="tel"
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="signupCity">Primary City</label>
+            <div class="auth-input-wrapper">
+              <i data-lucide="map-pin" class="auth-input-icon"></i>
+              <select id="signupCity" class="auth-input select-clean">
+                <option value="bengaluru">Bengaluru</option>
+                <option value="mumbai">Mumbai</option>
+                <option value="delhi">Delhi NCR</option>
+                <option value="hyderabad">Hyderabad</option>
+                <option value="pune">Pune</option>
+                <option value="chennai">Chennai</option>
+                <option value="ahmedabad">Ahmedabad</option>
+                <option value="kolkata">Kolkata</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top:12px;">
+          <label class="form-label" for="signupPassword">Create Password</label>
+          <div class="auth-input-wrapper">
+            <i data-lucide="lock" class="auth-input-icon"></i>
+            <input 
+              type="password" 
+              id="signupPassword" 
+              class="auth-input" 
+              placeholder="At least 6 characters" 
+              minlength="6"
+              required 
+              autocomplete="new-password"
+            >
+            <button type="button" class="auth-eye-btn" id="btnToggleSignupPw" aria-label="Toggle password visibility">
+              <i data-lucide="eye" style="width:14px;height:14px;"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-status-error" id="signupStatusError" style="display:none;"></div>
+
+        <div class="auth-terms-box" style="margin-top:12px;">
+          <label class="auth-checkbox-label">
+            <input type="checkbox" id="signupTermsAgree" checked required>
+            <span>I agree to Istaroth's Terms of Service and 8% transparent booking platform policy</span>
+          </label>
+        </div>
+
+        <button type="submit" class="auth-submit-btn" id="btnSignupSubmit" style="margin-top:14px;">
+          <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+          <span>Create My Account &amp; Unlock Passes</span>
+        </button>
+      </form>
+
+      <!-- Auth Footer Note -->
+      <div class="auth-modal-footer">
+        <i data-lucide="shield-check" style="width:13px;height:13px;color:#10B981;"></i>
+        <span>Bank-grade 256-bit SSL encrypted • Instant pass issuance</span>
       </div>
     </div>
   </div>
