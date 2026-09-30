@@ -392,7 +392,7 @@ class IstarothEventsApp {
                 <span class="district-card-price-label">For Two Approx</span>
                 <span class="district-card-price-value">${dine.currency}${dine.priceForTwo}</span>
               </div>
-              <button class="district-card-btn" style="background:#EA580C;" data-reserve-dine="${dine.id}">Reserve Table</button>
+              <button class="district-card-btn" data-reserve-dine="${dine.id}">Reserve Table</button>
             </div>
           </div>
         </div>
@@ -438,7 +438,7 @@ class IstarothEventsApp {
                 <span class="district-card-price-label">Tickets From</span>
                 <span class="district-card-price-value">₹${mov.cinemas[0].price}</span>
               </div>
-              <button class="district-card-btn" style="background:#0284C7;" data-book-movie="${mov.id}">Select Seats</button>
+              <button class="district-card-btn" data-book-movie="${mov.id}">Select Seats</button>
             </div>
           </div>
         </div>
@@ -481,7 +481,7 @@ class IstarothEventsApp {
                 <span class="district-card-price-label">Passes From</span>
                 <span class="district-card-price-value">${cmd.currency}${cmd.price}</span>
               </div>
-              <button class="district-card-btn" style="background:#D946EF;" data-book-cmd="${cmd.id}">Book Tickets</button>
+              <button class="district-card-btn" data-book-cmd="${cmd.id}">Book Tickets</button>
             </div>
           </div>
         </div>
@@ -555,7 +555,7 @@ class IstarothEventsApp {
               <span class="district-card-price-label">For Two Approx</span>
               <span class="district-card-price-value">${dine.currency}${dine.priceForTwo}</span>
             </div>
-            <button class="district-card-btn" style="background:#EA580C;" data-reserve-dine="${dine.id}">Reserve Table</button>
+            <button class="district-card-btn" data-reserve-dine="${dine.id}">Reserve Table</button>
           </div>
         </div>
       </div>
@@ -635,7 +635,7 @@ class IstarothEventsApp {
               <span class="district-card-price-label">Tickets From</span>
               <span class="district-card-price-value">₹${mov.cinemas[0].price}</span>
             </div>
-            <button class="district-card-btn" style="background:#0284C7;" data-book-movie="${mov.id}">Select Seats</button>
+            <button class="district-card-btn" data-book-movie="${mov.id}">Select Seats</button>
           </div>
         </div>
       </div>
@@ -707,7 +707,7 @@ class IstarothEventsApp {
               <span class="district-card-price-label">Passes From</span>
               <span class="district-card-price-value">${cmd.currency}${cmd.price}</span>
             </div>
-            <button class="district-card-btn" style="background:#D946EF;" data-book-cmd="${cmd.id}">Book Tickets</button>
+            <button class="district-card-btn" data-book-cmd="${cmd.id}">Book Tickets</button>
           </div>
         </div>
       </div>
