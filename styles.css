@@ -4765,4 +4765,112 @@ img {
   }
 }
 
+/* ==========================================================================
+   10. REAL-TIME DATA PIPELINES RADAR & URL CRAWLER
+   ========================================================================== */
+.btn-clean-radar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #ECFDF5;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 6px 12px;
+  border-radius: var(--pill);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  color: #065F46;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-clean-radar:hover {
+  background: #D1FAE5;
+  border-color: #10B981;
+  transform: translateY(-1px);
+}
+
+.pipeline-sources-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 520px) {
+  .pipeline-sources-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pipeline-source-card {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.psc-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.psc-icon {
+  width: 26px;
+  height: 26px;
+  background: #FFFFFF;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #E2E8F0;
+}
+
+.psc-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--pill);
+  background: #ECFDF5;
+  color: #059669;
+}
+
+.psc-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 2px;
+}
+
+.psc-sub {
+  font-size: 11px;
+  color: #64748B;
+  line-height: 1.35;
+}
+
+.pipeline-url-crawler-box {
+  background: #EEF2FF;
+  border: 1px solid rgba(79, 70, 229, 0.25);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.puc-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #312E81;
+}
+
+.puc-sub {
+  font-size: 11.5px;
+  color: #4338CA;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
 

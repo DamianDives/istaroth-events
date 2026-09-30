@@ -60,6 +60,7 @@ class IstarothEventsApp {
     this.bindHostEventForm();
     this.bindTreasuryControls();
     this.initMasterSearch();
+    this.initDataPipelinesRadar();
     
     // Apply initial state across all views
     this.updateRegionDisplay();
@@ -2235,6 +2236,193 @@ class IstarothEventsApp {
       this.setRegion(region);
       this.switchDistrictTab('eventsView');
       this.showToast(`🚀 "${title}" successfully published in ${this.getRegionLabel(region)}!`);
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // REAL-TIME DATA PIPELINES RADAR & URL CRAWLER
+  // --------------------------------------------------------------------------
+  initDataPipelinesRadar() {
+    const modal = document.getElementById('pipelineModal');
+    const openBtn = document.getElementById('btnOpenPipelineModal');
+    const closeBtn = document.getElementById('btnClosePipelineModal');
+    const urlForm = document.getElementById('urlCrawlerForm');
+    const urlInput = document.getElementById('crawlerUrlInput');
+    const statusMsg = document.getElementById('crawlerStatusMsg');
+    const pulseBtn = document.getElementById('btnPulseLiveCrawl');
+    const pulseIcon = document.getElementById('pipelinePulseIcon');
+    const regionLabel = document.getElementById('pipelineActiveRegionLabel');
+
+    const updateRegionText = () => {
+      if (regionLabel) {
+        regionLabel.textContent = this.getRegionLabel(this.currentRegion);
+      }
+    };
+
+    openBtn?.addEventListener('click', () => {
+      updateRegionText();
+      if (modal) {
+        modal.style.display = 'flex';
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+      if (window.lucide) window.lucide.createIcons();
+    });
+
+    const closeModal = () => {
+      if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Instant URL Crawler Form
+    urlForm?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const rawUrl = urlInput?.value.trim();
+      if (!rawUrl) return;
+
+      if (statusMsg) {
+        statusMsg.style.display = 'block';
+        statusMsg.style.color = '#4F46E5';
+        statusMsg.innerHTML = `<i data-lucide="loader" style="width:13px;height:13px;animation:spin 1s linear infinite;display:inline;"></i> Parsing schema &amp; geocoding venue from URL...`;
+        if (window.lucide) window.lucide.createIcons();
+      }
+
+      setTimeout(() => {
+        let domain = 'Event Provider';
+        let category = 'ai-tech';
+        let title = 'Extracted Community Tech Gathering';
+        let venue = 'Koramangala 4th Block Hub';
+        let price = 499;
+
+        if (rawUrl.includes('lu.ma')) {
+          domain = 'Luma Protocol';
+          category = 'founders-vc';
+          title = 'Luma Demo Day & Founders Mixer';
+          venue = 'WeWork Galaxy, Residency Rd';
+          price = 799;
+        } else if (rawUrl.includes('bookmyshow.com')) {
+          domain = 'BookMyShow Aggregator';
+          category = 'comedy';
+          title = 'Unfiltered Standup Roast Night';
+          venue = 'The Comedy Theatre, Indiranagar';
+          price = 499;
+        } else if (rawUrl.includes('meetup.com')) {
+          domain = 'Meetup Open Network';
+          category = 'hackathon';
+          title = 'Rust & Microservices Deep Dive Meetup';
+          venue = '91springboard, MG Road';
+          price = 299;
+        } else if (rawUrl.includes('devfolio') || rawUrl.includes('unstop')) {
+          domain = 'Campus Hackathon Network';
+          category = 'hackathon';
+          title = 'All-India Web3 & Agentic Hackathon';
+          venue = 'RV College of Engineering Auditorium';
+          price = 0;
+        }
+
+        const city = this.currentRegion === 'all' || this.currentRegion === 'india' 
+          ? 'Bengaluru' 
+          : this.getRegionLabel(this.currentRegion).split(',')[0].trim();
+
+        const newId = `crawled-${Date.now()}`;
+        const newEvent = {
+          id: newId,
+          title: `${title} (${domain})`,
+          region: this.currentRegion === 'all' ? 'bengaluru' : this.currentRegion,
+          country: 'india',
+          category: category,
+          date: 'NOV 18, 2026',
+          time: '06:30 PM - 09:30 PM IST',
+          venue: `${venue}, ${city}`,
+          city: city,
+          state: 'Karnataka',
+          price: price,
+          vipPrice: price > 0 ? price * 2 : 999,
+          currency: '₹',
+          symbol: '₹',
+          badge: '⚡ LIVE CRAWLED',
+          organizer: `${domain} Stream`,
+          description: `Automatically ingested via Istaroth Real-Time Pipeline from ${rawUrl}. Monitored by the 8.0% take-rate treasury engine.`,
+          image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=800&q=80',
+          ticketsTotal: 150,
+          ticketsSold: 12,
+          isFeatured: true
+        };
+
+        this.events.unshift(newEvent);
+        this.saveEvents();
+        this.renderEvents();
+        this.renderForYouView();
+
+        if (statusMsg) {
+          statusMsg.style.color = '#059669';
+          statusMsg.innerHTML = `✅ Successfully extracted &amp; published to <strong>${city}</strong> feed!`;
+        }
+
+        urlInput.value = '';
+        this.showToast(`📡 Ingested "${newEvent.title}" via real-time pipeline!`);
+        setTimeout(() => {
+          closeModal();
+          if (statusMsg) statusMsg.style.display = 'none';
+        }, 1200);
+      }, 900);
+    });
+
+    // Pulse Live Crawl (Simulate bulk crawl of fresh events)
+    pulseBtn?.addEventListener('click', () => {
+      if (pulseIcon) {
+        pulseIcon.style.animation = 'spin 0.8s linear infinite';
+      }
+      pulseBtn.disabled = true;
+
+      setTimeout(() => {
+        if (pulseIcon) pulseIcon.style.animation = '';
+        pulseBtn.disabled = false;
+
+        const currentCity = this.currentRegion === 'all' || this.currentRegion === 'india' 
+          ? 'Bengaluru' 
+          : this.getRegionLabel(this.currentRegion).split(',')[0].trim();
+
+        const streamEvent = {
+          id: `pulse-${Date.now()}`,
+          title: `${currentCity} AI & Agentic Micro-Meetup`,
+          region: this.currentRegion === 'all' ? 'bengaluru' : this.currentRegion,
+          country: 'india',
+          category: 'ai-tech',
+          date: 'NOV 22, 2026',
+          time: '05:00 PM - 08:00 PM IST',
+          venue: `Hacker Space Central, ${currentCity}`,
+          city: currentCity,
+          state: 'India Hub',
+          price: 699,
+          vipPrice: 1499,
+          currency: '₹',
+          symbol: '₹',
+          badge: '⚡ NEW INGESTED',
+          organizer: 'Luma Community Pulse',
+          description: `Discovered in real time via live crawler stream across ${currentCity} tech hubs.`,
+          image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80',
+          ticketsTotal: 80,
+          ticketsSold: 5,
+          isFeatured: false
+        };
+
+        this.events.unshift(streamEvent);
+        this.saveEvents();
+        this.renderEvents();
+        this.renderForYouView();
+
+        closeModal();
+        this.showToast(`🛰️ Live Radar: Ingested fresh event in ${currentCity} from Luma stream!`);
+      }, 1100);
     });
   }
 

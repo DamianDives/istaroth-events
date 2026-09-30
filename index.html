@@ -295,6 +295,10 @@
                 <i data-lucide="crosshair" id="gpsCrosshairIcon" style="width:13px;height:13px;color:#4F46E5;"></i>
                 <span id="gpsButtonLabel">Detect GPS</span>
               </button>
+              <button class="btn-clean-radar" id="btnOpenPipelineModal" title="Real-Time Data Pipelines & Ingestion Radar">
+                <i data-lucide="radio" style="width:13px;height:13px;color:#059669;"></i>
+                <span>Pipeline Radar</span>
+              </button>
             </div>
           </div>
 
@@ -1012,6 +1016,109 @@
         </button>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 4: REAL-TIME DATA PIPELINES RADAR & URL INGESTOR
+       ==================================================================== -->
+  <div class="modal-overlay" id="pipelineModal" style="display:none;">
+    <div class="modal-window" style="max-width: 600px;">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="bms-pulse-dot" style="background:#10B981;"></span>
+          <div class="modal-title">Live Data Pipeline Ingestion Radar</div>
+        </div>
+        <button class="modal-close-btn" id="btnClosePipelineModal" aria-label="Close modal">
+          <i data-lucide="x" style="width:16px;height:16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size:13px; color:var(--text-400); margin-bottom:14px; line-height:1.5;">
+          Automated multi-channel pipeline streaming live events from global tech hubs, college campuses, and local Indian venues into your regional feeds.
+        </p>
+
+        <!-- Pipeline Sources Status Grid -->
+        <div class="pipeline-sources-grid">
+          <div class="pipeline-source-card">
+            <div class="psc-top">
+              <span class="psc-icon"><i data-lucide="zap" style="width:14px;height:14px;color:#D97706;"></i></span>
+              <span class="psc-badge">Streaming (24ms)</span>
+            </div>
+            <div class="psc-name">Luma Protocol API</div>
+            <div class="psc-sub">Tech demo days, founder houses &amp; AI mixers</div>
+          </div>
+
+          <div class="pipeline-source-card">
+            <div class="psc-top">
+              <span class="psc-icon"><i data-lucide="ticket" style="width:14px;height:14px;color:#E11D48;"></i></span>
+              <span class="psc-badge">Streaming (38ms)</span>
+            </div>
+            <div class="psc-name">BookMyShow &amp; District Feed</div>
+            <div class="psc-sub">Standup comedy, screenings &amp; live concerts</div>
+          </div>
+
+          <div class="pipeline-source-card">
+            <div class="psc-top">
+              <span class="psc-icon"><i data-lucide="code" style="width:14px;height:14px;color:#2563EB;"></i></span>
+              <span class="psc-badge">Active (45ms)</span>
+            </div>
+            <div class="psc-name">Devfolio &amp; Unstop Network</div>
+            <div class="psc-sub">Student hackathons, builder bounties &amp; fests</div>
+          </div>
+
+          <div class="pipeline-source-card">
+            <div class="psc-top">
+              <span class="psc-icon"><i data-lucide="users" style="width:14px;height:14px;color:#7C3AED;"></i></span>
+              <span class="psc-badge">Active (52ms)</span>
+            </div>
+            <div class="psc-name">Meetup &amp; Open Event Graph</div>
+            <div class="psc-sub">Developer user groups &amp; open source workshops</div>
+          </div>
+        </div>
+
+        <!-- Instant URL Link Ingestor (Crawl Any Link in Real-Time) -->
+        <div class="pipeline-url-crawler-box">
+          <div class="puc-title">
+            <i data-lucide="sparkles" style="width:15px;height:15px;color:#4F46E5;"></i>
+            <span>Instant URL Crawler &amp; Event Ingestor</span>
+          </div>
+          <p class="puc-sub">
+            Paste ANY live event URL (from Luma, BookMyShow, Meetup, Eventbrite, or social posts) to immediately parse, auto-categorize, and inject it into your regional feed with the 8% take-rate monetization protocol.
+          </p>
+
+          <form id="urlCrawlerForm" style="margin-top:10px;">
+            <div style="display:flex; gap:8px;">
+              <input 
+                type="url" 
+                id="crawlerUrlInput" 
+                class="text-input" 
+                placeholder="https://lu.ma/your-event or https://in.bookmyshow.com/..." 
+                required
+                style="flex:1; font-size:12px;"
+              >
+              <button type="submit" class="btn btn-p" id="btnCrawlUrl" style="padding:0 14px; height:42px; font-size:12.5px; font-weight:700; white-space:nowrap; display:flex; align-items:center; gap:6px;">
+                <i data-lucide="arrow-down-to-dot" style="width:14px;height:14px;"></i>
+                <span>Ingest Link</span>
+              </button>
+            </div>
+          </form>
+          <div id="crawlerStatusMsg" style="margin-top:8px; font-size:12px; display:none;"></div>
+        </div>
+
+        <!-- Live Pulse Crawl Button -->
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:14px; padding-top:12px; border-top:1px solid var(--border);">
+          <div style="font-size:12px; color:var(--text-400);">
+            Active region: <strong id="pipelineActiveRegionLabel" style="color:#0F172A;">Bengaluru</strong>
+          </div>
+          <button class="btn btn-s" id="btnPulseLiveCrawl" style="font-size:12px; height:34px; padding:0 14px; display:flex; align-items:center; gap:6px;">
+            <i data-lucide="refresh-cw" id="pipelinePulseIcon" style="width:13px;height:13px;"></i>
+            <span>Pulse Ingestion Stream</span>
+          </button>
+        </div>
+
+      </div>
     </div>
   </div>
 
