@@ -1,0 +1,20 @@
+{
+  "name": "istaroth-events",
+  "version": "1.0.0",
+  "description": "Istaroth Events Platform - Regional Discovery & Monetized Ticketing Protocol",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y serve . -p 3000",
+    "start": "npx -y serve . -p 3000"
+  },
+  "keywords": [
+    "istaroth",
+    "events",
+    "ticketing",
+    "take-rate",
+    "commission",
+    "regional-discovery"
+  ],
+  "author": "Istaroth Tech",
+  "license": "MIT"
+}

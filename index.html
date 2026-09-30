@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Istaroth Events | Discover Summits, Dining, Screenings &amp; Experiences</title>
+  <meta name="description" content="Discover premier tech events, founder dining &amp; mixers, IMAX screenings, and live comedy gigs in your city. Powered by Istaroth.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="district-body">
+
+  <!-- ====================================================================
+       ISTAROTH EVENTS MASTER HEADER (Minimalist, Elevated Navigation)
+       ==================================================================== -->
+  <header class="district-master-header" id="masterHeader">
+    <div class="district-header-container">
+      
+      <!-- Brand Logo + Location Selector -->
+      <div class="district-brand-wrap">
+        <a href="#" class="district-brand-logo" id="brandHomeBtn" title="Istaroth Events Home">
+          <div class="district-logo-symbol">
+            <svg viewBox="0 0 32 32" fill="none" class="district-svg-logo">
+              <rect width="32" height="32" rx="9" fill="#4F46E5"/>
+              <path d="M16 6L18.8 13.2L26 16L18.8 18.8L16 26L13.2 18.8L6 16L13.2 13.2L16 6Z" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <div class="district-logo-text-group">
+            <div class="istaroth-brand-lockup">
+              <span class="district-logo-name">istaroth</span>
+              <span class="istaroth-events-pill">events</span>
+            </div>
+          </div>
+        </a>
+
+        <div class="district-header-divider"></div>
+
+        <!-- Location Selector Pill (Clean, Minimal) -->
+        <button class="district-loc-pill" id="bmsNavCityBtn" title="Select or Change City">
+          <i data-lucide="map-pin" style="width:14px;height:14px;color:#4F46E5;"></i>
+          <span id="bmsNavCityName" class="district-loc-city-label">Bengaluru</span>
+          <i data-lucide="chevron-down" style="width:13px;height:13px;color:var(--text-400);"></i>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs (Sleek Minimalist Segmented Tabs) -->
+      <nav class="district-nav-tabs" id="districtNavTabs">
+        <button class="district-tab-btn active" data-district-tab="forYouView">
+          <i data-lucide="sparkles" class="district-tab-icon"></i>
+          <span>For you</span>
+        </button>
+        <button class="district-tab-btn" data-district-tab="eventsView">
+          <i data-lucide="ticket" class="district-tab-icon"></i>
+          <span>Events</span>
+        </button>
+        <button class="district-tab-btn" data-district-tab="diningView">
+          <i data-lucide="utensils" class="district-tab-icon"></i>
+          <span>Dining</span>
+        </button>
+        <button class="district-tab-btn" data-district-tab="moviesView">
+          <i data-lucide="film" class="district-tab-icon"></i>
+          <span>Screenings</span>
+        </button>
+        <button class="district-tab-btn" data-district-tab="comedyView">
+          <i data-lucide="smile" class="district-tab-icon"></i>
+          <span>Comedy</span>
+        </button>
+      </nav>
+
+      <!-- Search Bar + Utility Actions -->
+      <div class="district-header-actions">
+        <div class="district-search-bar" id="districtSearchBar">
+          <i data-lucide="search" class="district-search-icon" style="width:15px;height:15px;color:var(--text-400);"></i>
+          <input 
+            type="text" 
+            id="districtMasterSearchInput" 
+            placeholder="Search events, dining, screenings..."
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button type="button" id="btnClearMasterSearch" style="display:none;" class="district-search-clear" title="Clear">
+            <i data-lucide="x" style="width:13px;height:13px;"></i>
+          </button>
+        </div>
+
+        <button class="district-utility-btn" data-district-tab="treasuryView" title="Platform Treasury (8% Protocol Fee)">
+          <i data-lucide="shield-check" style="width:14px;height:14px;color:#4F46E5;"></i>
+          <span class="d-hide-mobile">Treasury</span>
+          <span class="district-rate-tag">8% Cut</span>
+        </button>
+
+        <button class="district-utility-btn" data-district-tab="ticketsView" title="My Passes">
+          <i data-lucide="qr-code" style="width:14px;height:14px;color:#4F46E5;"></i>
+          <span class="d-hide-mobile">Passes</span>
+          <span id="passCountBadge" class="district-badge-count">0</span>
+        </button>
+
+        <button class="district-cta-host-btn" id="navHostCtaBtn" data-district-tab="hostView" title="Host on Istaroth">
+          <i data-lucide="plus" style="width:14px;height:14px;"></i>
+          <span>Host</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="district-main">
+
+    <!-- ====================================================================
+         PAGE 1: FOR YOU (Istaroth Curated Master Feed)
+         ==================================================================== -->
+    <section id="forYouView" class="tab-view active">
+      
+      <!-- HERO CAROUSEL (Minimalist Modern Editorial Banner) -->
+      <section class="district-carousel-wrap">
+        <div class="container">
+          <div class="district-carousel" id="districtHeroCarousel">
+            <div class="district-slides-container" id="carouselSlidesTrack">
+              <!-- Injected by JavaScript -->
+            </div>
+
+            <!-- Carousel Controls -->
+            <button class="district-carousel-arrow prev" id="carouselPrevBtn" aria-label="Previous Slide">
+              <i data-lucide="chevron-left" style="width:18px;height:18px;"></i>
+            </button>
+            <button class="district-carousel-arrow next" id="carouselNextBtn" aria-label="Next Slide">
+              <i data-lucide="chevron-right" style="width:18px;height:18px;"></i>
+            </button>
+
+            <!-- Carousel Indicators -->
+            <div class="district-carousel-dots" id="carouselDots">
+              <!-- Dots injected via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MINIMAL QUICK CATEGORY RAILS -->
+      <div class="container">
+        <div class="district-category-strip">
+          <button class="district-cat-pill active" data-for-you-filter="all">
+            <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+            <span>All Picks</span>
+          </button>
+          <button class="district-cat-pill" data-for-you-filter="ai-tech">
+            <i data-lucide="cpu" style="width:14px;height:14px;"></i>
+            <span>AI &amp; Frontier</span>
+          </button>
+          <button class="district-cat-pill" data-for-you-filter="dining">
+            <i data-lucide="utensils" style="width:14px;height:14px;"></i>
+            <span>Founder Dining</span>
+          </button>
+          <button class="district-cat-pill" data-for-you-filter="hackathon">
+            <i data-lucide="code" style="width:14px;height:14px;"></i>
+            <span>Hackathons</span>
+          </button>
+          <button class="district-cat-pill" data-for-you-filter="movies">
+            <i data-lucide="film" style="width:14px;height:14px;"></i>
+            <span>Screenings</span>
+          </button>
+          <button class="district-cat-pill" data-for-you-filter="comedy">
+            <i data-lucide="smile" style="width:14px;height:14px;"></i>
+            <span>Comedy Roasts</span>
+          </button>
+          <button class="district-cat-pill" data-for-you-filter="founders-vc">
+            <i data-lucide="trending-up" style="width:14px;height:14px;"></i>
+            <span>Founders &amp; VC</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="container district-content-container">
+
+        <!-- SECTION 1: TRENDING EVENTS -->
+        <div class="district-section-header">
+          <div>
+            <h2 class="district-sec-title">
+              <span>Trending Events</span>
+              <span class="district-badge-chip">Curated</span>
+            </h2>
+            <p class="district-sec-sub">Summits, hacker houses, and founder mixers in high demand</p>
+          </div>
+          <button class="district-see-all-btn" data-district-tab="eventsView">
+            <span>Explore Events</span>
+            <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+          </button>
+        </div>
+
+        <div class="district-cards-row" id="forYouTrendingEvents">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- SECTION 2: DINING & BUILDER MIXERS -->
+        <div class="district-section-header" style="margin-top: 44px;">
+          <div>
+            <h2 class="district-sec-title">
+              <span>Curated Dining &amp; Mixers</span>
+              <span class="district-badge-chip perk">15% Member Perk</span>
+            </h2>
+            <p class="district-sec-sub">Founder tables, craft breweries, and reserved seating with no waitlists</p>
+          </div>
+          <button class="district-see-all-btn" data-district-tab="diningView">
+            <span>Explore Dining</span>
+            <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+          </button>
+        </div>
+
+        <div class="district-cards-row" id="forYouDiningHighlights">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- SECTION 3: SCREENINGS & PREMIERES -->
+        <div class="district-section-header" style="margin-top: 44px;">
+          <div>
+            <h2 class="district-sec-title">
+              <span>Screenings &amp; Keynotes</span>
+              <span class="district-badge-chip movie">IMAX Laser</span>
+            </h2>
+            <p class="district-sec-sub">Tech documentaries, special retrospectives &amp; auditorium keynotes</p>
+          </div>
+          <button class="district-see-all-btn" data-district-tab="moviesView">
+            <span>All Screenings</span>
+            <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+          </button>
+        </div>
+
+        <div class="district-cards-row" id="forYouMovieHighlights">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- SECTION 4: COMEDY & TECH ROASTS -->
+        <div class="district-section-header" style="margin-top: 44px;">
+          <div>
+            <h2 class="district-sec-title">
+              <span>Comedy Gigs &amp; Roasts</span>
+              <span class="district-badge-chip comedy">Live Gigs</span>
+            </h2>
+            <p class="district-sec-sub">Unfiltered startup roasts, solo specials &amp; founder afterhours</p>
+          </div>
+          <button class="district-see-all-btn" data-district-tab="comedyView">
+            <span>All Shows</span>
+            <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+          </button>
+        </div>
+
+        <div class="district-cards-row" id="forYouComedyHighlights">
+          <!-- Rendered via JS -->
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         PAGE 2: EVENTS (Streamlined Minimal Discovery Feed)
+         ==================================================================== -->
+    <section id="eventsView" class="tab-view">
+      <div class="container district-content-container" style="padding-top: 20px;">
+        
+        <!-- Clean Unified Events Discovery Header -->
+        <div class="events-minimal-header-box">
+          <div class="emh-top-row">
+            <div>
+              <div class="emh-eyebrow">
+                <span class="bms-pulse-dot"></span>
+                <span>LIVE DISCOVERY FEED</span>
+              </div>
+              <h1 class="emh-title">
+                Events in <span id="bmsCurrentCityDisplay" style="color:#4F46E5;">Bengaluru</span>
+              </h1>
+              <p class="emh-sub" id="eventsCountSub">
+                Summits, hackathons, and founder mixers
+              </p>
+            </div>
+
+            <div class="emh-actions-row">
+              <button class="btn-clean-city-switch" id="btnChangeCityModal" title="Change City">
+                <i data-lucide="map-pin" style="width:14px;height:14px;color:#4F46E5;"></i>
+                <span>Switch City</span>
+                <i data-lucide="chevron-down" style="width:13px;height:13px;color:var(--text-400);"></i>
+              </button>
+              <button class="btn-clean-gps" id="btnAutoDetect" title="Auto-detect current GPS location">
+                <i data-lucide="crosshair" id="gpsCrosshairIcon" style="width:13px;height:13px;color:#4F46E5;"></i>
+                <span id="gpsButtonLabel">Detect GPS</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Minimal Category Rail -->
+          <div class="category-pills-row" id="categoryPillsContainer" style="margin-top: 14px;">
+            <!-- Dynamic Category Pills -->
+          </div>
+
+          <!-- Inline Search & Sort -->
+          <div class="emh-search-sort-row" style="margin-top: 12px;">
+            <div class="emh-search-box">
+              <i data-lucide="search" style="width:14px;height:14px;color:var(--text-400)"></i>
+              <input type="text" id="eventSearchInput" placeholder="Filter by event title, track or venue..." autocomplete="off">
+            </div>
+
+            <div class="emh-sort-box">
+              <select id="sortSelect">
+                <option value="featured">Featured First</option>
+                <option value="date-asc">Date: Upcoming</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="popular">Most Popular</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hidden container for bmsQuickStrip so existing app.js logic succeeds silently -->
+        <div id="bmsQuickStrip" style="display:none;"></div>
+
+        <!-- Events Grid (Unified minimal card layout) -->
+        <div class="district-cards-row" id="eventsGrid" style="margin-top: 20px;">
+          <!-- Event Cards Rendered Dynamically -->
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display:none;">
+          <i data-lucide="compass" style="width:40px;height:40px;color:var(--text-400);margin-bottom:12px;"></i>
+          <h3>No events found in this city or category</h3>
+          <p>Try switching to another city or resetting your filters to explore events across India &amp; global hubs.</p>
+          <button class="btn btn-s" id="btnResetFilters">View All India Events</button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         PAGE 3: DINING (Curated Founder Dining & Lounges)
+         ==================================================================== -->
+    <section id="diningView" class="tab-view">
+      <div class="container district-content-container" style="padding-top: 24px;">
+        
+        <div class="district-page-header-box">
+          <div class="district-ph-left">
+            <span class="district-badge-chip perk">🍽️ Curated Dining</span>
+            <h1 class="district-ph-title">Dining &amp; Builder Mixers in <span id="diningCityHeader" style="color:#4F46E5;">Bengaluru</span></h1>
+            <p class="district-ph-sub">Reserve curated founder tables, craft microbreweries &amp; rooftop lounges with exclusive perks.</p>
+          </div>
+        </div>
+
+        <!-- Dining Filter Chips -->
+        <div class="district-subfilter-bar" id="diningFilterBar">
+          <button class="subfilter-pill active" data-dining-filter="all">All Spots</button>
+          <button class="subfilter-pill" data-dining-filter="Craft Microbrewery">Craft Breweries</button>
+          <button class="subfilter-pill" data-dining-filter="Rooftop">Rooftop Terraces</button>
+          <button class="subfilter-pill" data-dining-filter="Founder">Founder Dinners</button>
+          <button class="subfilter-pill" data-dining-filter="Jazz">Jazz &amp; Cocktails</button>
+        </div>
+
+        <!-- Dining Venues Grid -->
+        <div class="district-venues-grid" id="diningGrid">
+          <!-- Rendered via JS -->
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         PAGE 4: SCREENINGS (IMAX & Keynote Screenings)
+         ==================================================================== -->
+    <section id="moviesView" class="tab-view">
+      <div class="container district-content-container" style="padding-top: 24px;">
+        
+        <div class="district-page-header-box">
+          <div class="district-ph-left">
+            <span class="district-badge-chip movie">🎬 Screenings</span>
+            <h1 class="district-ph-title">Screenings &amp; Premieres in <span id="moviesCityHeader" style="color:#4F46E5;">Bengaluru</span></h1>
+            <p class="district-ph-sub">Premieres, tech documentaries &amp; auditorium keynotes in IMAX Laser and Dolby Atmos.</p>
+          </div>
+        </div>
+
+        <!-- Movies Filter Chips -->
+        <div class="district-subfilter-bar" id="moviesFilterBar">
+          <button class="subfilter-pill active" data-movie-filter="all">Now Showing</button>
+          <button class="subfilter-pill" data-movie-filter="imax">IMAX Enhanced</button>
+          <button class="subfilter-pill" data-movie-filter="documentary">Tech Documentaries</button>
+          <button class="subfilter-pill" data-movie-filter="retrospective">Special Screenings</button>
+        </div>
+
+        <!-- Movies & Showtimes Grid -->
+        <div class="district-movies-grid" id="moviesGrid">
+          <!-- Rendered via JS -->
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         PAGE 5: COMEDY (Stand-Up & Pitch Roasts)
+         ==================================================================== -->
+    <section id="comedyView" class="tab-view">
+      <div class="container district-content-container" style="padding-top: 24px;">
+        
+        <div class="district-page-header-box">
+          <div class="district-ph-left">
+            <span class="district-badge-chip comedy">🎙️ Live Comedy</span>
+            <h1 class="district-ph-title">Comedy &amp; Tech Roasts in <span id="comedyCityHeader" style="color:#4F46E5;">Bengaluru</span></h1>
+            <p class="district-ph-sub">Stand-up specials, live pitch deck roasts, and unhinged founder afterhours comedy.</p>
+          </div>
+        </div>
+
+        <!-- Comedy Filter Chips -->
+        <div class="district-subfilter-bar" id="comedyFilterBar">
+          <button class="subfilter-pill active" data-comedy-filter="all">All Shows</button>
+          <button class="subfilter-pill" data-comedy-filter="roast">Pitch Roasts</button>
+          <button class="subfilter-pill" data-comedy-filter="solo">Solo Specials</button>
+          <button class="subfilter-pill" data-comedy-filter="auditorium">Auditorium Jams</button>
+        </div>
+
+        <!-- Comedy Gigs Grid -->
+        <div class="district-comedy-grid" id="comedyGrid">
+          <!-- Rendered via JS -->
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         PAGE 6: PLATFORM TREASURY & TAKE-RATE PROTOCOL
+         ==================================================================== -->
+    <section id="treasuryView" class="tab-view treasury-view">
+      <div class="container district-content-container" style="padding-top: 24px;">
+        
+        <div style="margin-bottom: 24px;">
+          <span class="district-badge-chip" style="background:#EDE9FE; color:#4F46E5;">Protocol Governance</span>
+          <h1 class="section-title" style="font-size:28px; margin-top:8px;">
+            Istaroth Platform Treasury &amp; Revenue Ledger
+          </h1>
+          <p class="section-sub" style="margin:4px 0 0; text-align:left; max-width:760px;">
+            Transparent platform commission protocol: 8.0% take-rate automatically captured into the treasury on ticket transactions and dining bookings.
+          </p>
+        </div>
+
+        <!-- KPI METRICS -->
+        <div class="treasury-kpi-grid">
+          <div class="kpi-card highlight">
+            <div class="kpi-label">
+              <span>Platform Take-Rate Revenue (Yours)</span>
+              <span class="kpi-badge">Net Captured</span>
+            </div>
+            <div class="kpi-val" id="kpiPlatformRevenue">₹0.00</div>
+            <div class="kpi-sub">Calculated via protocol take-rate on ticket GMV</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-label">
+              <span>Gross Merchandise Value (GMV)</span>
+              <i data-lucide="bar-chart-3" style="width:16px;height:16px;color:var(--text-400)"></i>
+            </div>
+            <div class="kpi-val" id="kpiTotalGmv">₹0.00</div>
+            <div class="kpi-sub">Total ticket volume processed across all regions</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-label">
+              <span>Organizer Net Disbursal</span>
+              <i data-lucide="arrow-up-right" style="width:16px;height:16px;color:var(--emerald)"></i>
+            </div>
+            <div class="kpi-val" id="kpiOrganizerPayout">₹0.00</div>
+            <div class="kpi-sub">Transferred to event organizers after fee deduction</div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-label">
+              <span>Passes Issued</span>
+              <i data-lucide="ticket" style="width:16px;height:16px;color:var(--cyan)"></i>
+            </div>
+            <div class="kpi-val" id="kpiTicketsCount">0</div>
+            <div class="kpi-sub">Verified digital tickets &amp; reservations issued</div>
+          </div>
+        </div>
+
+        <!-- PROTOCOL TAKE-RATE GOVERNANCE CONTROL -->
+        <div class="take-rate-governance-box">
+          <div class="trg-header">
+            <div>
+              <div class="trg-title">Platform Take-Rate Controller</div>
+              <div class="trg-desc">Adjust the platform's cut on every ticket sold. Affects all future checkout transactions.</div>
+            </div>
+            <div class="trg-current-rate" id="currentRateBadge">8.0% Take-Rate</div>
+          </div>
+
+          <div class="trg-slider-row">
+            <input type="range" id="rateSlider" min="1.0" max="25.0" step="0.5" value="8.0" class="rate-range-slider">
+            <div class="trg-scale-labels">
+              <span>1.0% (Subsidized)</span>
+              <span>8.0% (Recommended Standard)</span>
+              <span>15.0% (Enterprise)</span>
+              <span>25.0% (Premium Concierge)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- REAL-TIME AUDIT TRANSACTION LEDGER -->
+        <div class="ledger-box">
+          <div class="ledger-header">
+            <div>
+              <div class="ledger-title">Real-Time Transaction Ledger</div>
+              <div class="ledger-sub">Immutable audit log showing GMV, platform fee captured, and net organizer payout.</div>
+            </div>
+            <button class="btn btn-s" id="btnExportLedger">
+              <i data-lucide="download" style="width:14px;height:14px;"></i>
+              Export CSV
+            </button>
+          </div>
+
+          <table class="ledger-table">
+            <thead>
+              <tr>
+                <th>Txn ID</th>
+                <th>Event / Experience</th>
+                <th>Buyer</th>
+                <th>Tier</th>
+                <th>GMV</th>
+                <th>Istaroth Cut (8%)</th>
+                <th>Organizer Net</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="ledgerTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         PAGE 7: HOST ON ISTAROTH (Organizer Ingestion Engine)
+         ==================================================================== -->
+    <section id="hostView" class="tab-view host-event-view">
+      <div class="container district-content-container" style="padding-top: 24px;">
+        
+        <div style="margin-bottom: 24px;">
+          <span class="district-badge-chip" style="background:#EDE9FE; color:#4F46E5;">Organizer Portal</span>
+          <h1 class="section-title" style="font-size:28px; margin-top:8px;">
+            Publish on Istaroth Events
+          </h1>
+          <p class="section-sub" style="margin:4px 0 0; text-align:left; max-width:760px;">
+            Publish directly into our Indian and global discovery feeds. Transparent 8.0% commission protocol with instant ticketing settlements.
+          </p>
+        </div>
+
+        <div class="host-grid">
+          
+          <!-- Event Creation Form -->
+          <div class="host-form-card">
+            <form id="hostEventForm">
+              
+              <div class="input-group">
+                <label class="input-label" for="hostTitle">Event / Experience Title *</label>
+                <input type="text" id="hostTitle" class="text-input" placeholder="e.g. Hyderabad Agentic AI &amp; Cloud Summit 2026" required>
+              </div>
+
+              <div class="form-row-2">
+                <div class="input-group">
+                  <label class="input-label" for="hostCategory">Vertical / Category *</label>
+                  <select id="hostCategory" class="text-input" required>
+                    <option value="ai-tech">AI &amp; Frontier Tech</option>
+                    <option value="hackathon">Hackathon &amp; Builder Jam</option>
+                    <option value="founders-vc">Founders &amp; VC Mixer</option>
+                    <option value="dining">Founder Dining / Rooftop Mixer</option>
+                    <option value="movies">Documentary / Keynote Screening</option>
+                    <option value="comedy">Stand-Up / Tech Roast</option>
+                    <option value="design-creative">Design &amp; Product</option>
+                    <option value="web3-crypto">Web3 &amp; Decentralized</option>
+                  </select>
+                </div>
+
+                <div class="input-group">
+                  <label class="input-label" for="hostRegion">City / Region *</label>
+                  <select id="hostRegion" class="text-input" required>
+                    <option value="bengaluru">Bengaluru (Karnataka)</option>
+                    <option value="hyderabad">Hyderabad (Telangana)</option>
+                    <option value="mumbai">Mumbai (Maharashtra)</option>
+                    <option value="delhi">Delhi NCR</option>
+                    <option value="pune">Pune (Maharashtra)</option>
+                    <option value="chennai">Chennai (Tamil Nadu)</option>
+                    <option value="ahmedabad">Ahmedabad (Gujarat)</option>
+                    <option value="sf">San Francisco (Global)</option>
+                    <option value="london">London (Global)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="input-group">
+                  <label class="input-label" for="hostDate">Date String *</label>
+                  <input type="text" id="hostDate" class="text-input" placeholder="e.g. DEC 05, 2026" required>
+                </div>
+
+                <div class="input-group">
+                  <label class="input-label" for="hostTime">Time &amp; Schedule *</label>
+                  <input type="text" id="hostTime" class="text-input" placeholder="e.g. 06:00 PM - 09:30 PM IST" required>
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label" for="hostVenue">Venue &amp; Exact Address *</label>
+                <input type="text" id="hostVenue" class="text-input" placeholder="e.g. T-Hub Phase 2, Knowledge City, Hyderabad" required>
+              </div>
+
+              <div class="form-row-2">
+                <div class="input-group">
+                  <label class="input-label" for="hostPrice">General Pass Price (₹) *</label>
+                  <input type="number" id="hostPrice" class="text-input" min="0" placeholder="e.g. 1999" required>
+                </div>
+
+                <div class="input-group">
+                  <label class="input-label" for="hostVipPrice">VIP Pass Price (₹)</label>
+                  <input type="number" id="hostVipPrice" class="text-input" min="0" placeholder="e.g. 4999">
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="input-group">
+                  <label class="input-label" for="hostOrganizer">Organizer Brand / Community *</label>
+                  <input type="text" id="hostOrganizer" class="text-input" placeholder="e.g. Hyderabad GenAI Founders" required>
+                </div>
+
+                <div class="input-group">
+                  <label class="input-label" for="hostBadge">Badge / Tagline</label>
+                  <input type="text" id="hostBadge" class="text-input" placeholder="e.g. Flagship Summit / Free Passes">
+                </div>
+              </div>
+
+              <div class="input-group">
+                <label class="input-label" for="hostImgUrl">Banner Image URL</label>
+                <input type="url" id="hostImgUrl" class="text-input" placeholder="https://images.unsplash.com/photo-...">
+              </div>
+
+              <div class="input-group">
+                <label class="input-label" for="hostDesc">Event Description *</label>
+                <textarea id="hostDesc" class="text-input" rows="3" placeholder="Provide a compelling overview of topics, keynote speakers, and target audience..." required></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-p" style="width:100%; height:46px; margin-top:8px;">
+                <i data-lucide="plus-circle" style="width:17px;height:17px;"></i>
+                <span>Publish to Istaroth Feed</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Live Revenue Projection Calculator for Organizer -->
+          <div class="host-calculator-card">
+            <h4 style="font-size:17px; font-weight:700; color:var(--text-100); margin-bottom:6px;">
+              Organizer Payout Calculator
+            </h4>
+            <p style="font-size:13px; color:var(--text-400); margin-bottom:18px;">
+              Simulate total ticket revenue, platform take-rate cut, and net disbursal into your bank.
+            </p>
+
+            <div class="calc-input-block">
+              <label class="input-label">Projected Ticket Sales Count</label>
+              <input type="number" id="calcTicketsCount" class="text-input" value="250" min="1">
+            </div>
+
+            <div class="calc-input-block" style="margin-top:12px;">
+              <label class="input-label">Average Ticket Price (₹)</label>
+              <input type="number" id="calcAvgPrice" class="text-input" value="2499" min="0">
+            </div>
+
+            <div class="calc-result-box" style="margin-top:20px;">
+              <div class="calc-res-row">
+                <span>Estimated Gross GMV:</span>
+                <strong id="calcGmvVal">₹6,24,750</strong>
+              </div>
+              <div class="calc-res-row" style="color:var(--primary);">
+                <span>Istaroth Platform Cut (8.0%):</span>
+                <strong id="calcCutVal">₹49,980</strong>
+              </div>
+              <div class="calc-res-row total" style="border-top:1px dashed var(--border); padding-top:10px; margin-top:8px;">
+                <span>Your Net Disbursal:</span>
+                <strong id="calcNetVal" style="font-size:18px; color:var(--emerald);">₹5,74,770</strong>
+              </div>
+            </div>
+
+            <div style="margin-top:18px; font-size:12px; color:var(--text-400); line-height:1.5;">
+              <i data-lucide="check" style="width:14px;height:14px;display:inline;color:var(--emerald);"></i>
+              Disbursal dispatched automatically within 24 hours of event check-in completion.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ====================================================================
+         PAGE 8: MY PASSES (Digital Passbook)
+         ==================================================================== -->
+    <section id="ticketsView" class="tab-view my-tickets-view">
+      <div class="container district-content-container" style="padding-top: 24px;">
+        
+        <div style="margin-bottom: 24px;">
+          <span class="district-badge-chip" style="background:#EDE9FE; color:#4F46E5;">Verified Passbook</span>
+          <h1 class="section-title" style="font-size:28px; margin-top:8px;">
+            Your Digital Passes &amp; Reservations
+          </h1>
+          <p class="section-sub" style="margin:4px 0 0; text-align:left; max-width:760px;">
+            Digital credentials with cryptographically verifiable QR check-in codes. Show this pass on your device at the door.
+          </p>
+        </div>
+
+        <div id="ticketsContainer" class="tickets-container-grid">
+          <!-- Rendered via JS -->
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================================
+       MODAL 1: CHECKOUT & TICKET RESERVATION MODAL
+       ====================================================================== -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title">Complete Reservation</div>
+        <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close modal">
+          <i data-lucide="x" style="width:16px;height:16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="checkout-event-preview">
+          <img src="" alt="Event" id="modalEventImg" class="cep-thumb">
+          <div class="cep-info">
+            <h4 id="modalEventTitle">Event Title</h4>
+            <p id="modalEventLocation">City • Venue</p>
+            <p id="modalEventDate" style="color:var(--primary); font-weight:600; margin-top:2px;">Date</p>
+          </div>
+        </div>
+
+        <label class="input-label">Select Ticket Tier</label>
+        <div class="tier-selector">
+          <div class="tier-card selected" id="tierGeneralCard" data-tier="general">
+            <div class="tier-name">General Admission</div>
+            <div class="tier-price" id="modalGeneralPrice">₹0.00</div>
+            <div style="font-size:11.5px; color:var(--text-400); margin-top:3px;">Full stage access &amp; materials</div>
+          </div>
+          <div class="tier-card" id="tierVipCard" data-tier="vip">
+            <div class="tier-name">VIP All-Access</div>
+            <div class="tier-price" id="modalVipPrice">₹0.00</div>
+            <div style="font-size:11.5px; color:var(--violet); margin-top:3px;">VIP lounge &amp; speaker mixer</div>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; background:var(--bg); padding:10px 14px; border-radius:var(--r-md); border:1px solid var(--border);">
+          <span style="font-size:13.5px; font-weight:600; color:var(--text-100);">Quantity of Passes</span>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <button id="btnQtyMinus" class="modal-close-btn" style="width:28px;height:28px;">-</button>
+            <span id="ticketQtyText" style="font-family:var(--mono); font-weight:700; font-size:16px; color:var(--text-100);">1</span>
+            <button id="btnQtyPlus" class="modal-close-btn" style="width:28px;height:28px;">+</button>
+          </div>
+        </div>
+
+        <!-- FINANCIAL COMMISSION BREAKDOWN -->
+        <div class="financial-split-box">
+          <div class="fsb-header">
+            <span class="fsb-title">
+              <i data-lucide="shield-check" style="width:14px;height:14px;"></i>
+              Transaction Transparency
+            </span>
+            <span class="fsb-split-badge">Take-Rate: <span id="modalPlatformRate">8.0</span>%</span>
+          </div>
+
+          <div class="fsb-row">
+            <span>Ticket Subtotal:</span>
+            <span style="font-family:var(--mono); font-weight:600;" id="modalSubtotal">₹0.00</span>
+          </div>
+
+          <div class="fsb-row platform-cut">
+            <span>
+              <i data-lucide="zap" style="width:12px;height:12px;display:inline;margin-right:3px;"></i>
+              Istaroth Platform Cut (<span id="modalFeePct">8%</span>):
+            </span>
+            <span style="font-family:var(--mono);" id="modalPlatformFee">₹0.00</span>
+          </div>
+
+          <div class="fsb-row">
+            <span>Organizer Net Disbursal:</span>
+            <span style="font-family:var(--mono);" id="modalOrganizerNet">₹0.00</span>
+          </div>
+
+          <div class="fsb-row total-row">
+            <span>Total Amount:</span>
+            <span style="font-family:var(--mono); color:var(--primary); font-size:18px;" id="modalTotal">₹0.00</span>
+          </div>
+        </div>
+
+        <form id="checkoutForm">
+          <div class="input-group">
+            <label class="input-label" for="attendeeName">Full Name *</label>
+            <input type="text" id="attendeeName" class="text-input" placeholder="e.g. Vikramaditya Roy" required>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="attendeeEmail">Email for Ticket Dispatch *</label>
+            <input type="email" id="attendeeEmail" class="text-input" placeholder="vikram@techfirm.in" required>
+          </div>
+
+          <button type="submit" class="btn btn-p" style="width:100%; height:46px; font-size:14px;">
+            <i data-lucide="lock" style="width:15px;height:15px;"></i>
+            Confirm &amp; Issue Digital Pass
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       MODAL 2: DINING TABLE RESERVATION MODAL
+       ====================================================================== -->
+  <div class="modal-overlay" id="diningReserveModal" style="display:none;">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title">Reserve Table</div>
+        <button class="modal-close-btn" id="diningModalCloseBtn" aria-label="Close modal">
+          <i data-lucide="x" style="width:16px;height:16px;"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="checkout-event-preview">
+          <img src="" alt="Dining" id="diningModalImg" class="cep-thumb">
+          <div class="cep-info">
+            <h4 id="diningModalName">Venue Name</h4>
+            <p id="diningModalLocation">Neighborhood • City</p>
+            <p id="diningModalPerk" style="color:#EA580C; font-weight:700; margin-top:2px;">Perk</p>
+          </div>
+        </div>
+
+        <form id="diningReserveForm">
+          <div class="form-row-2">
+            <div class="input-group">
+              <label class="input-label" for="diningDate">Date *</label>
+              <input type="date" id="diningDate" class="text-input" required>
+            </div>
+            <div class="input-group">
+              <label class="input-label" for="diningPartySize">Guests *</label>
+              <select id="diningPartySize" class="text-input" required>
+                <option value="2">2 Guests (Couple / Pair)</option>
+                <option value="4" selected>4 Guests (Founder Table)</option>
+                <option value="6">6 Guests (Team Dinner)</option>
+                <option value="8">8+ Guests (VIP Lounge)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">Select Seating Slot</label>
+            <div class="district-slot-selector" id="diningSlotSelector">
+              <!-- Slot buttons injected dynamically -->
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="diningGuestName">Full Name *</label>
+            <input type="text" id="diningGuestName" class="text-input" placeholder="e.g. Sahil Varma" required>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="diningGuestPhone">Mobile Number *</label>
+            <input type="tel" id="diningGuestPhone" class="text-input" placeholder="+91 98765 43210" required>
+          </div>
+
+          <div class="financial-split-box" style="margin-top:14px;">
+            <div class="fsb-row" style="color:var(--emerald); font-weight:600;">
+              <span>Member Perk:</span>
+              <span id="diningPerkNotice">Instant Confirmation • No Cover Charge</span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-p" style="width:100%; height:46px; margin-top:14px; background:#4F46E5;">
+            <i data-lucide="calendar-check" style="width:15px;height:15px;"></i>
+            Confirm Table Reservation
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       MODAL 3: CITY SELECTION MODAL OVERLAY
+       ==================================================================== -->
+  <div class="bms-modal-overlay" id="bmsCityModal" style="display:none;">
+    <div class="bms-modal-dialog">
+      
+      <!-- Top Search & Close Bar -->
+      <div class="bms-modal-header">
+        <div class="bms-modal-search-wrap">
+          <i data-lucide="search" class="bms-modal-search-icon" style="width:16px;height:16px;color:var(--text-400);"></i>
+          <input 
+            type="text" 
+            id="bmsCitySearchInput" 
+            class="bms-modal-search-input" 
+            placeholder="Search for your city or hub..." 
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button type="button" id="btnClearBmsSearch" class="bms-modal-clear-btn" style="display:none;" title="Clear search">
+            <i data-lucide="x" style="width:14px;height:14px;"></i>
+          </button>
+        </div>
+        <button class="modal-close-btn" id="btnCloseBmsModal" title="Close">
+          <i data-lucide="x" style="width:16px;height:16px;"></i>
+        </button>
+      </div>
+
+      <div class="bms-modal-body">
+        <!-- Detect My Location Row -->
+        <div class="bms-detect-row" id="bmsModalDetectBtn">
+          <div class="bms-detect-icon-box">
+            <i data-lucide="crosshair" id="bmsModalGpsIcon" style="width:16px;height:16px;color:#4F46E5;"></i>
+          </div>
+          <div class="bms-detect-info">
+            <div class="bms-detect-title" id="bmsModalDetectTitle">Auto Detect My Location</div>
+            <div class="bms-detect-sub">Using GPS coordinates to find nearest events &amp; dining spots</div>
+          </div>
+          <span class="bms-detect-badge">GPS</span>
+        </div>
+
+        <!-- POPULAR CITIES Grid -->
+        <div class="bms-section-box" id="bmsPopularSection">
+          <div class="bms-section-title">POPULAR CITIES</div>
+          <div class="bms-popular-grid" id="bmsPopularGrid">
+            <!-- Injected dynamically via JS with landmark icons -->
+          </div>
+        </div>
+
+        <!-- OTHER CITIES & WORLD HUBS -->
+        <div class="bms-section-box" id="bmsOtherSection">
+          <div class="bms-section-title" id="bmsOtherSectionTitle">OTHER CITIES &amp; GLOBAL HUBS</div>
+          <div class="bms-other-cities-list" id="bmsOtherCitiesList">
+            <!-- Injected via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer Quick Feeds -->
+      <div class="bms-modal-footer">
+        <button class="bms-footer-pill" id="bmsAllIndiaBtn">
+          <span>🇮🇳</span>
+          <span>All India (National Feed)</span>
+        </button>
+        <button class="bms-footer-pill" id="bmsAllWorldBtn">
+          <span>🌐</span>
+          <span>All World &amp; India</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast-msg">
+    <i data-lucide="check-circle" style="width:16px;height:16px;color:var(--emerald)"></i>
+    <span id="toastText">Action successful</span>
+  </div>
+
+  <!-- ISTAROTH EVENTS FOOTER -->
+  <footer class="footer district-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="f-brand">
+            <span style="color:#0F172A; font-weight:800; font-size:22px; letter-spacing:-0.03em;">istaroth</span>
+            <span style="font-size:12px; color:#4F46E5; margin-left:6px; font-weight:700; background:#EEF2FF; padding:3px 8px; border-radius:9999px;">events</span>
+          </div>
+          <p class="f-tag">
+            Next-generation urban experience discovery: premier tech conferences, founder dinners, rooftop mixers, IMAX screenings, and comedy roasts powered by the 8.0% take-rate treasury protocol.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h6>Experiences</h6>
+          <ul>
+            <li><a href="#" class="foot-nav" data-district-tab="forYouView">For you</a></li>
+            <li><a href="#" class="foot-nav" data-district-tab="eventsView">Live Events</a></li>
+            <li><a href="#" class="foot-nav" data-district-tab="diningView">Dining &amp; Mixers</a></li>
+            <li><a href="#" class="foot-nav" data-district-tab="moviesView">Screenings</a></li>
+            <li><a href="#" class="foot-nav" data-district-tab="comedyView">Comedy &amp; Roasts</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h6>Platform</h6>
+          <ul>
+            <li><a href="#" class="foot-nav" data-district-tab="treasuryView">Platform Treasury (8%)</a></li>
+            <li><a href="#" class="foot-nav" data-district-tab="hostView">Host on Istaroth</a></li>
+            <li><a href="#" class="foot-nav" data-district-tab="ticketsView">My Passes</a></li>
+            <li><a href="https://istaroth.tech" target="_blank">istaroth.tech ↗</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-btm">
+        <span>© 2026 Istaroth Events. All rights reserved.</span>
+        <span>events.istaroth.tech</span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
