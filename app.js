@@ -21,6 +21,7 @@ class IstarothEventsApp {
   constructor() {
     this.currentRegion = localStorage.getItem('istaroth_region') || 'bengaluru';
     this.currentCategory = 'all';
+    this.currentNeighborhood = 'all';
     this.searchQuery = '';
     this.sortMethod = 'upcoming';
     this.activeDistrictTab = 'forYouView';
@@ -54,6 +55,7 @@ class IstarothEventsApp {
     this.initDistrictCarousel();
     this.initBookMyShowLocationModal();
     this.renderCategoryPills();
+    this.renderNeighborhoodPills();
     this.bindSearchAndSort();
     this.bindCheckoutModal();
     this.bindDiningModal();
@@ -94,20 +96,30 @@ class IstarothEventsApp {
   // PERSISTENCE HELPERS
   // --------------------------------------------------------------------------
   loadEvents() {
-    const saved = localStorage.getItem('istaroth_events_db_v2');
+    const saved = localStorage.getItem('istaroth_events_db_v3');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        const existingIds = new Set(parsed.map(e => e.id));
+        const merged = [...parsed];
+        INITIAL_EVENTS.forEach(ev => {
+          if (!existingIds.has(ev.id)) {
+            merged.push(ev);
+            existingIds.add(ev.id);
+          }
+        });
+        localStorage.setItem('istaroth_events_db_v3', JSON.stringify(merged));
+        return merged;
       } catch (e) {
         console.error('Failed to parse cached events', e);
       }
     }
-    localStorage.setItem('istaroth_events_db_v2', JSON.stringify(INITIAL_EVENTS));
+    localStorage.setItem('istaroth_events_db_v3', JSON.stringify(INITIAL_EVENTS));
     return [...INITIAL_EVENTS];
   }
 
   saveEvents() {
-    localStorage.setItem('istaroth_events_db_v2', JSON.stringify(this.events));
+    localStorage.setItem('istaroth_events_db_v3', JSON.stringify(this.events));
   }
 
   loadLedger() {
@@ -227,6 +239,11 @@ class IstarothEventsApp {
         }
       });
     });
+
+    document.getElementById('btnSeeAllLocalWorkshops')?.addEventListener('click', () => {
+      this.setCategory('local-workshops');
+      switchDistrictTab('eventsView');
+    });
   }
 
   // --------------------------------------------------------------------------
@@ -326,10 +343,10 @@ class IstarothEventsApp {
           <div class="district-card-media">
             <img src="${evt.image}" alt="${evt.title}" loading="lazy">
             <span class="district-card-overlay-badge">${evt.badge || 'Trending'}</span>
-            <span class="district-card-overlay-city">${evt.city}</span>
+            <span class="district-card-overlay-city">${evt.neighborhood ? `${evt.neighborhood}, ${evt.city}` : evt.city}</span>
           </div>
           <div class="district-card-body">
-            <span class="district-card-category">${evt.category.toUpperCase()}</span>
+            <span class="district-card-category">${(evt.category || '').toUpperCase().replace(/-/g, ' ')}</span>
             <h3 class="district-card-title">${evt.title}</h3>
             <div class="district-card-meta">
               <div class="district-card-meta-row">
@@ -343,16 +360,70 @@ class IstarothEventsApp {
             </div>
             <div class="district-card-footer">
               <div class="district-card-price">
-                <span class="district-card-price-label">Price From</span>
-                <span class="district-card-price-value">${evt.symbol}${evt.price.toLocaleString()}</span>
+                <span class="district-card-price-label">${evt.price === 0 ? 'Free Entry' : 'Price From'}</span>
+                <span class="district-card-price-value">${evt.price === 0 ? 'Free' : `${evt.symbol}${evt.price.toLocaleString()}`}</span>
               </div>
-              <button class="district-card-btn" data-book-evt="${evt.id}">Book Pass</button>
+              <button class="district-card-btn" data-book-evt="${evt.id}">${evt.price === 0 ? 'Claim Free Pass' : 'Book Pass'}</button>
             </div>
           </div>
         </div>
       `).join('');
 
       trendingContainer.querySelectorAll('[data-book-evt]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const evt = this.events.find(ev => ev.id === btn.dataset.bookEvt);
+          if (evt) this.openCheckoutModal(evt);
+        });
+      });
+    }
+
+    // 1B. Local Highlights & Workshops
+    const localContainer = document.getElementById('forYouLocalHighlights');
+    if (localContainer) {
+      const localCats = ['local-workshops', 'music-live', 'fitness-outdoor', 'community-fleas', 'boardgames-trivia'];
+      let localEvts = this.events.filter(e => {
+        const isLocalCat = localCats.includes(e.category);
+        if (!isLocalCat) return false;
+        if (this.currentRegion === 'all' || this.currentRegion === 'india') return true;
+        return e.region === this.currentRegion;
+      });
+      if (localEvts.length === 0) {
+        localEvts = this.events.filter(e => localCats.includes(e.category));
+      }
+      const topLocal = localEvts.slice(0, 4);
+      localContainer.innerHTML = topLocal.map(evt => `
+        <div class="district-card" data-event-id="${evt.id}">
+          <div class="district-card-media">
+            <img src="${evt.image}" alt="${evt.title}" loading="lazy">
+            <span class="district-card-overlay-badge" style="background:#059669; color:#fff;">${evt.badge || 'Local Gem'}</span>
+            <span class="district-card-overlay-city">${evt.neighborhood ? `${evt.neighborhood}, ${evt.city}` : evt.city}</span>
+          </div>
+          <div class="district-card-body">
+            <span class="district-card-category" style="color:#059669;">${(evt.category || '').toUpperCase().replace(/-/g, ' ')}</span>
+            <h3 class="district-card-title">${evt.title}</h3>
+            <div class="district-card-meta">
+              <div class="district-card-meta-row">
+                <i data-lucide="calendar" style="width:13px;height:13px;color:#059669;"></i>
+                <span>${evt.date} • ${evt.time.split('-')[0].trim()}</span>
+              </div>
+              <div class="district-card-meta-row">
+                <i data-lucide="map-pin" style="width:13px;height:13px;color:#059669;"></i>
+                <span>${evt.venue}</span>
+              </div>
+            </div>
+            <div class="district-card-footer">
+              <div class="district-card-price">
+                <span class="district-card-price-label">${evt.price === 0 ? 'Free Entry' : 'Price From'}</span>
+                <span class="district-card-price-value">${evt.price === 0 ? 'Free' : `${evt.symbol}${evt.price.toLocaleString()}`}</span>
+              </div>
+              <button class="district-card-btn" data-book-evt="${evt.id}">${evt.price === 0 ? 'Claim Free Pass' : 'Reserve Pass'}</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      localContainer.querySelectorAll('[data-book-evt]').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const evt = this.events.find(ev => ev.id === btn.dataset.bookEvt);
@@ -1341,8 +1412,55 @@ class IstarothEventsApp {
     this.renderEvents();
   }
 
+  renderNeighborhoodPills() {
+    const container = document.getElementById('neighborhoodPillsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const city = INDIA_CITIES.find(c => c.id === this.currentRegion);
+    if (!city || !city.neighborhoods || city.neighborhoods.length === 0) {
+      container.style.display = 'none';
+      return;
+    }
+
+    container.style.display = 'flex';
+
+    // "All Areas" pill
+    const allBtn = document.createElement('button');
+    allBtn.className = `nh-btn ${this.currentNeighborhood === 'all' ? 'active' : ''}`;
+    allBtn.dataset.neighborhood = 'all';
+    allBtn.innerHTML = `<i data-lucide="map-pin" style="width:12px;height:12px;"></i> <span>All ${city.name}</span>`;
+    allBtn.addEventListener('click', () => {
+      this.setNeighborhood('all');
+    });
+    container.appendChild(allBtn);
+
+    // Each neighborhood pill
+    city.neighborhoods.forEach(nh => {
+      const btn = document.createElement('button');
+      btn.className = `nh-btn ${this.currentNeighborhood.toLowerCase() === nh.toLowerCase() ? 'active' : ''}`;
+      btn.dataset.neighborhood = nh;
+      btn.innerHTML = `<span>${nh}</span>`;
+      btn.addEventListener('click', () => {
+        this.setNeighborhood(nh);
+      });
+      container.appendChild(btn);
+    });
+
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  setNeighborhood(nh) {
+    this.currentNeighborhood = nh;
+    document.querySelectorAll('.nh-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.neighborhood.toLowerCase() === nh.toLowerCase());
+    });
+    this.renderEvents();
+  }
+
   setRegion(regionId) {
     this.currentRegion = regionId;
+    this.currentNeighborhood = 'all';
     localStorage.setItem('istaroth_region', regionId);
 
     const navSelect = document.getElementById('navRegionSelect');
@@ -1357,6 +1475,7 @@ class IstarothEventsApp {
     });
 
     this.updateRegionDisplay();
+    this.renderNeighborhoodPills();
     this.renderEvents();
     this.renderForYouView();
     this.renderDiningView();
@@ -1504,6 +1623,15 @@ class IstarothEventsApp {
         if (evt.region !== this.currentRegion) return false;
       }
 
+      // Neighborhood filter
+      if (this.currentNeighborhood !== 'all') {
+        const nhLower = this.currentNeighborhood.toLowerCase();
+        const matchesNeighborhood = (evt.neighborhood && evt.neighborhood.toLowerCase().includes(nhLower)) ||
+                                    (evt.venue && evt.venue.toLowerCase().includes(nhLower)) ||
+                                    (evt.tags && evt.tags.some(t => t.toLowerCase().includes(nhLower)));
+        if (!matchesNeighborhood) return false;
+      }
+
       // Category filter
       if (this.currentCategory !== 'all' && evt.category !== this.currentCategory) {
         return false;
@@ -1511,7 +1639,7 @@ class IstarothEventsApp {
 
       // Search query
       if (this.searchQuery) {
-        const haystack = `${evt.title} ${evt.city} ${evt.state || ''} ${evt.venue} ${evt.organizer} ${(evt.tags || []).join(' ')} ${evt.description}`.toLowerCase();
+        const haystack = `${evt.title} ${evt.city} ${evt.neighborhood || ''} ${evt.state || ''} ${evt.venue} ${evt.organizer} ${(evt.tags || []).join(' ')} ${evt.description}`.toLowerCase();
         if (!haystack.includes(this.searchQuery)) {
           return false;
         }
@@ -1535,7 +1663,7 @@ class IstarothEventsApp {
 
     const countSub = document.getElementById('eventsCountSub');
     if (countSub) {
-      countSub.textContent = `Showing ${filtered.length} live summits, hackathons and mixers`;
+      countSub.textContent = `Showing ${filtered.length} live summits, workshops, and local events`;
     }
 
     if (filtered.length === 0) {
@@ -1552,6 +1680,8 @@ class IstarothEventsApp {
       document.getElementById('btnResetFilters')?.addEventListener('click', () => {
         this.setRegion('all');
         this.setCategory('all');
+        this.currentNeighborhood = 'all';
+        this.renderNeighborhoodPills();
         this.searchQuery = '';
         const searchInput = document.getElementById('eventSearchInput');
         if (searchInput) searchInput.value = '';
@@ -1566,10 +1696,10 @@ class IstarothEventsApp {
         <div class="district-card-media">
           <img src="${evt.image}" alt="${evt.title}" loading="lazy">
           <span class="district-card-overlay-badge">${evt.badge || 'Featured'}</span>
-          <span class="district-card-overlay-city">${evt.city}</span>
+          <span class="district-card-overlay-city">${evt.neighborhood ? `${evt.neighborhood}, ${evt.city}` : evt.city}</span>
         </div>
         <div class="district-card-body">
-          <span class="district-card-category">${evt.category.toUpperCase()}</span>
+          <span class="district-card-category">${(evt.category || '').toUpperCase().replace(/-/g, ' ')}</span>
           <h3 class="district-card-title">${evt.title}</h3>
           <div class="district-card-meta">
             <div class="district-card-meta-row">
@@ -1583,10 +1713,10 @@ class IstarothEventsApp {
           </div>
           <div class="district-card-footer">
             <div class="district-card-price">
-              <span class="district-card-price-label">Price From</span>
-              <span class="district-card-price-value">${evt.symbol}${evt.price.toLocaleString()}</span>
+              <span class="district-card-price-label">${evt.price === 0 ? 'Free Entry' : 'Price From'}</span>
+              <span class="district-card-price-value">${evt.price === 0 ? 'Free' : `${evt.symbol}${evt.price.toLocaleString()}`}</span>
             </div>
-            <button class="district-card-btn" data-book-evt="${evt.id}">Reserve Pass</button>
+            <button class="district-card-btn" data-book-evt="${evt.id}">${evt.price === 0 ? 'Claim Free Pass' : 'Reserve Pass'}</button>
           </div>
         </div>
       </div>
@@ -1710,7 +1840,11 @@ class IstarothEventsApp {
 
     const payBtnText = document.getElementById('payButtonText');
     if (payBtnText) {
-      payBtnText.textContent = `Pay ${sym}${totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })} via Razorpay`;
+      if (totalAmount === 0) {
+        payBtnText.textContent = `Claim Free Community Pass`;
+      } else {
+        payBtnText.textContent = `Pay ${sym}${totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2 })} via Razorpay`;
+      }
     }
   }
 
@@ -1735,6 +1869,21 @@ class IstarothEventsApp {
     const platformCut = subtotal * (this.platformTakeRate / 100);
     const organizerNet = subtotal - platformCut;
     const amountInPaise = Math.round(subtotal * 100);
+
+    // Free community event pass instant generation
+    if (subtotal === 0) {
+      this.completeSuccessfulBooking({
+        attendeeName,
+        attendeeEmail,
+        attendeePhone,
+        paymentId: `FREE-${Math.floor(100000 + Math.random() * 900000)}`,
+        subtotal: 0,
+        platformCut: 0,
+        organizerNet: 0,
+        paymentMethod: 'Free Community RSVP'
+      });
+      return;
+    }
 
     const rzpKey = localStorage.getItem('istaroth_rzp_key') || 'rzp_test_1DP5mmOlF5G5ag';
 

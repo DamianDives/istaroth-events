@@ -154,9 +154,29 @@
             <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
             <span>All Picks</span>
           </button>
+          <button class="district-cat-pill" data-for-you-filter="local-workshops">
+            <i data-lucide="palette" style="width:14px;height:14px;"></i>
+            <span>Workshops &amp; Crafts</span>
+          </button>
+          <button class="district-cat-pill" data-for-you-filter="music-live">
+            <i data-lucide="music" style="width:14px;height:14px;"></i>
+            <span>Live Music &amp; Gigs</span>
+          </button>
+          <button class="district-cat-pill" data-for-you-filter="fitness-outdoor">
+            <i data-lucide="activity" style="width:14px;height:14px;"></i>
+            <span>Fitness &amp; Turf</span>
+          </button>
+          <button class="district-cat-pill" data-for-you-filter="community-fleas">
+            <i data-lucide="shopping-bag" style="width:14px;height:14px;"></i>
+            <span>Fleas &amp; Pop-Ups</span>
+          </button>
+          <button class="district-cat-pill" data-for-you-filter="boardgames-trivia">
+            <i data-lucide="dices" style="width:14px;height:14px;"></i>
+            <span>Board Games</span>
+          </button>
           <button class="district-cat-pill" data-for-you-filter="ai-tech">
             <i data-lucide="cpu" style="width:14px;height:14px;"></i>
-            <span>AI &amp; Frontier</span>
+            <span>AI &amp; Tech</span>
           </button>
           <button class="district-cat-pill" data-for-you-filter="dining">
             <i data-lucide="utensils" style="width:14px;height:14px;"></i>
@@ -173,10 +193,6 @@
           <button class="district-cat-pill" data-for-you-filter="comedy">
             <i data-lucide="smile" style="width:14px;height:14px;"></i>
             <span>Comedy Roasts</span>
-          </button>
-          <button class="district-cat-pill" data-for-you-filter="founders-vc">
-            <i data-lucide="trending-up" style="width:14px;height:14px;"></i>
-            <span>Founders &amp; VC</span>
           </button>
         </div>
       </div>
@@ -199,6 +215,25 @@
         </div>
 
         <div class="district-cards-row" id="forYouTrendingEvents">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- SECTION 1B: LOCAL EXPERIENCES & WORKSHOPS -->
+        <div class="district-section-header" style="margin-top: 44px;">
+          <div>
+            <h2 class="district-sec-title">
+              <span>Local Experiences &amp; Workshops</span>
+              <span class="district-badge-chip" style="background:#F0FDF4; color:#15803D; border-color:#DCFCE7;">Neighborhood Gems</span>
+            </h2>
+            <p class="district-sec-sub">Pottery, run clubs, acoustic sunset jams, and Sunday pop-ups</p>
+          </div>
+          <button class="district-see-all-btn" id="btnSeeAllLocalWorkshops" data-district-tab="eventsView" data-category-target="local-workshops">
+            <span>Explore Local</span>
+            <i data-lucide="arrow-right" style="width:13px;height:13px;"></i>
+          </button>
+        </div>
+
+        <div class="district-cards-row" id="forYouLocalHighlights">
           <!-- Rendered via JS -->
         </div>
 
@@ -305,6 +340,11 @@
           <!-- Minimal Category Rail -->
           <div class="category-pills-row" id="categoryPillsContainer" style="margin-top: 14px;">
             <!-- Dynamic Category Pills -->
+          </div>
+
+          <!-- Micro-Neighborhood / Locality Filter Rail -->
+          <div class="neighborhood-pills-row" id="neighborhoodPillsContainer" style="margin-top: 10px;">
+            <!-- Dynamic Neighborhood Pills e.g. All Areas, Indiranagar, Koramangala, etc. -->
           </div>
 
           <!-- Inline Search & Sort -->
