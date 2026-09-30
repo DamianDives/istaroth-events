@@ -4156,86 +4156,506 @@ img {
   color: #FFFFFF !important;
 }
 
-/* Specific 510px viewport responsive optimization */
+/* ==========================================================================
+   9. COMPREHENSIVE MOBILE RESPONSIVE ENGINE (320px - 640px)
+   Covers iPhone, Android, and mobile ratios across all 8 views & modals
+   ========================================================================== */
 @media (max-width: 640px) {
-  .district-header-container {
-    padding: 8px 14px;
-    gap: 8px;
+  /* Global Container & Touch Ergonomics */
+  body, html {
+    overflow-x: hidden !important;
+    width: 100% !important;
   }
+
+  .container,
+  .district-content-container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    max-width: 100% !important;
+  }
+
+  /* Master Header & Navigation */
+  .district-master-header {
+    padding: 0;
+  }
+
+  .district-header-container {
+    padding: 8px 12px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
   .district-brand-wrap {
     width: 100%;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    gap: 8px;
   }
+
   .district-header-divider {
     display: none;
   }
-  .district-nav-tabs {
-    order: 2;
-    width: 100%;
-    overflow-x: auto;
-    padding: 2px;
-    gap: 1px;
-  }
-  .district-tab-btn {
-    padding: 5px 10px;
-    font-size: 12px;
-  }
+
+  /* Compact Header Action Buttons on Mobile */
   .district-header-actions {
+    display: flex !important;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .district-utility-btn {
+    padding: 6px 10px;
+    font-size: 11.5px;
+    height: 32px;
+    gap: 4px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+  }
+
+  .district-cta-host-btn {
+    padding: 6px 11px;
+    font-size: 11.5px;
+    height: 32px;
+    gap: 3px;
+  }
+
+  .district-nav-tabs {
+    order: 3;
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 3px 2px;
+    gap: 4px;
+  }
+
+  .district-nav-tabs::-webkit-scrollbar {
     display: none;
   }
+
+  .district-tab-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Main Hero Carousel */
+  .district-carousel-wrap {
+    padding-top: 10px;
+  }
+
   .district-carousel {
-    height: 240px;
+    height: 230px !important;
     border-radius: 14px;
   }
+
   .district-slide {
-    padding: 20px 16px;
+    padding: 16px 14px !important;
   }
+
+  .district-slide-badge {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+
   .district-slide-title {
-    font-size: 18px;
-    line-height: 1.25;
+    font-size: 17px !important;
+    line-height: 1.25 !important;
+    margin: 4px 0 !important;
   }
+
   .district-slide-sub {
-    font-size: 12px;
-    margin-bottom: 12px;
+    font-size: 11.5px !important;
+    margin-bottom: 10px !important;
   }
+
+  .district-slide-actions {
+    gap: 8px;
+  }
+
   .district-slide-btn {
-    padding: 7px 14px;
-    font-size: 12px;
+    padding: 6px 12px !important;
+    font-size: 11.5px !important;
   }
+
   .district-slide-price-tag {
-    font-size: 12px;
+    font-size: 11px !important;
   }
+
   .district-slide-price-tag strong {
-    font-size: 14px;
+    font-size: 13px !important;
   }
+
   .district-carousel-dots {
+    display: none !important;
+  }
+
+  .district-carousel-arrow {
+    display: none !important;
+  }
+
+  /* Category Strips */
+  .district-category-strip {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px;
+    padding: 10px 0 6px 0;
+  }
+
+  .district-category-strip::-webkit-scrollbar {
     display: none;
   }
+
+  .district-cat-pill {
+    padding: 6px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Section Headers */
+  .district-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-top: 28px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .district-sec-title {
+    font-size: 19px !important;
+  }
+
+  .district-sec-sub {
+    font-size: 12.5px !important;
+  }
+
+  .district-see-all-btn {
+    align-self: flex-start;
+    font-size: 12.5px;
+  }
+
+  /* Events View Header */
   .events-minimal-header-box {
-    padding: 14px 14px;
+    padding: 14px 12px !important;
+    border-radius: 12px;
   }
+
+  .emh-eyebrow {
+    font-size: 10.5px;
+  }
+
   .emh-title {
-    font-size: 19px;
+    font-size: 18px !important;
+    line-height: 1.25;
   }
+
+  .emh-sub {
+    font-size: 12px !important;
+  }
+
   .emh-actions-row {
-    width: 100%;
-    justify-content: flex-start;
+    width: 100% !important;
+    justify-content: flex-start !important;
+    margin-top: 8px;
+    gap: 6px;
   }
+
+  .btn-clean-city-switch,
+  .btn-clean-gps {
+    padding: 6px 10px;
+    font-size: 11.5px;
+  }
+
+  .emh-search-sort-row {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
   .emh-search-box {
-    min-width: 100%;
+    width: 100% !important;
+    min-width: 100% !important;
   }
+
   .emh-sort-box {
-    width: 100%;
+    width: 100% !important;
   }
+
   .emh-sort-box select {
-    width: 100%;
+    width: 100% !important;
+    height: 38px;
   }
-  .district-cards-row {
-    grid-template-columns: 1fr;
-    gap: 16px;
+
+  /* Unified Card Grids across ALL Views (For you, Events, Dining, Screenings, Comedy) */
+  .district-cards-row,
+  .district-venues-grid,
+  .district-movies-grid,
+  .district-comedy-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    margin-top: 14px !important;
   }
+
   .district-card-media {
-    height: 160px;
+    height: 170px !important;
+  }
+
+  .district-card-body {
+    padding: 14px !important;
+  }
+
+  .district-card-title {
+    font-size: 16.5px !important;
+    line-height: 1.3 !important;
+  }
+
+  .district-card-meta {
+    gap: 6px !important;
+    margin: 8px 0 !important;
+  }
+
+  .district-card-meta-row {
+    font-size: 12px !important;
+  }
+
+  .district-card-footer {
+    margin-top: 14px !important;
+    padding-top: 12px !important;
+  }
+
+  .district-card-btn {
+    padding: 8px 14px !important;
+    font-size: 12.5px !important;
+    min-height: 38px;
+  }
+
+  /* Dining, Movies & Comedy View Headers & Rails */
+  .district-page-header-box {
+    padding: 16px 12px !important;
+    margin-bottom: 14px !important;
+    border-radius: 12px;
+  }
+
+  .district-ph-title {
+    font-size: 18px !important;
+    line-height: 1.25 !important;
+  }
+
+  .district-ph-sub {
+    font-size: 12px !important;
+  }
+
+  .district-subfilter-bar {
+    display: flex !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 6px !important;
+    padding: 4px 0 8px 0 !important;
+  }
+
+  .district-subfilter-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .subfilter-pill {
+    padding: 5px 12px !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+  }
+
+  /* Platform Treasury View */
+  .treasury-kpi-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .kpi-card {
+    padding: 14px 12px !important;
+    border-radius: 12px !important;
+  }
+
+  .kpi-val {
+    font-size: 24px !important;
+  }
+
+  .kpi-sub {
+    font-size: 11.5px !important;
+  }
+
+  .take-rate-governance-box {
+    padding: 14px 12px !important;
+    border-radius: 12px !important;
+    margin-top: 16px !important;
+  }
+
+  .trg-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+
+  .trg-current-rate {
+    align-self: flex-start !important;
+    font-size: 12px !important;
+  }
+
+  .trg-scale-labels {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 4px !important;
+    font-size: 10.5px !important;
+    margin-top: 8px !important;
+  }
+
+  .ledger-box {
+    padding: 14px 12px !important;
+    border-radius: 12px !important;
+    margin-top: 16px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ledger-table {
+    min-width: 580px !important;
+    font-size: 11.5px !important;
+  }
+
+  .ledger-table th,
+  .ledger-table td {
+    padding: 8px 8px !important;
+  }
+
+  /* Host Portal View */
+  .host-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .form-row-2 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .host-form-card,
+  .host-calculator-card {
+    padding: 16px 12px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Passes / My Tickets View */
+  .tickets-container-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .ticket-pass-wrap {
+    max-width: 100% !important;
+    border-radius: 12px !important;
+  }
+
+  .tpb-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Modals: Checkout, Dining Reservation & City Selector */
+  .modal-window {
+    width: 95vw !important;
+    max-width: 440px !important;
+    max-height: 92vh !important;
+    overflow-y: auto !important;
+    border-radius: 16px !important;
+    padding: 18px 14px !important;
+    margin: 8px auto !important;
+  }
+
+  .tier-selector {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .bms-modal-dialog {
+    width: 95vw !important;
+    max-width: 440px !important;
+    max-height: 92vh !important;
+    border-radius: 16px !important;
+    margin: 8px auto !important;
+  }
+
+  .bms-modal-header {
+    padding: 12px !important;
+  }
+
+  .bms-modal-body {
+    padding: 12px !important;
+    max-height: calc(90vh - 130px) !important;
+  }
+
+  .bms-popular-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  .bms-popular-card {
+    padding: 8px 4px !important;
+  }
+
+  .bms-popular-icon-circle {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 16px !important;
+  }
+
+  .bms-popular-name {
+    font-size: 10.5px !important;
+  }
+
+  .bms-modal-footer {
+    flex-direction: column !important;
+    gap: 6px !important;
+    padding: 10px 12px !important;
+  }
+
+  .bms-footer-pill {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 8px !important;
+    font-size: 12px !important;
+  }
+
+  /* Footer */
+  .district-footer {
+    padding: 36px 0 24px !important;
+    margin-top: 40px !important;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .foot-btm {
+    flex-direction: column !important;
+    gap: 6px !important;
+    text-align: center !important;
+  }
+}
+
+/* Extra small screens (iPhone SE, 320px - 380px) */
+@media (max-width: 380px) {
+  .bms-popular-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .tpb-grid {
+    grid-template-columns: 1fr !important;
   }
 }
 

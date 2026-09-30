@@ -1805,7 +1805,11 @@ class IstarothEventsApp {
         </div>
       `;
       document.getElementById('btnExploreFromTickets')?.addEventListener('click', () => {
-        document.querySelector('.nav-tab[data-tab="exploreView"]')?.click();
+        if (typeof this.switchDistrictTab === 'function') {
+          this.switchDistrictTab('eventsView');
+        } else {
+          document.querySelector('[data-district-tab="eventsView"]')?.click();
+        }
       });
       if (window.lucide) window.lucide.createIcons();
       return;
